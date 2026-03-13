@@ -4,11 +4,13 @@ AppVendix es una plataforma de Punto de Venta (POS) diseñada para la era modern
 
 ## 🚀 Características Principales
 
-- **Arquitectura Multi-Tenant**: Aislamiento de datos por empresa, garantizando que cada cliente solo acceda a su información.
-- **Gestión de Sucursales**: Control centralizado de múltiples sucursales por empresa.
-- **Inventario en Tiempo Real**: Descuento automático de stock tras cada venta con soporte para alertas de stock bajo.
-- **Interfaz Premium**: Diseño oscuro (Dark Mode) con estética de "glassmorphism", micro-animaciones y una experiencia de usuario fluida.
-- **Lógica de Ventas Robusta**: Transacciones ACID para asegurar la integridad de las ventas y el inventario.
+- **Jerarquía de 3 Niveles**:
+    1. **SaaS Super Admin**: Control total del sistema, gestión de clientes y planes.
+    2. **Admin de Empresa**: Gestión de su propia empresa, sucursales y usuarios.
+    3. **Usuarios Operativos**: Cajeros, supervisores y personal de almacén con RBAC.
+- **Arquitectura Multi-Tenant**: Aislamiento estricto de datos mediante `company_id`.
+- **Gestión de Suscripciones**: Activación modular de módulos (Inventario, Reportes, Taller) según el plan.
+- **Seguridad RBAC**: Control de acceso basado en roles y permisos configurable por empresa.
 
 ## 🛠️ Stack Tecnológico
 
