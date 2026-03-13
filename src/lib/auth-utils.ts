@@ -1,4 +1,4 @@
-import prisma from './prisma.ts';
+import prisma from './prisma';
 import { SystemRole, CompanyStatus } from '@prisma/client';
 
 export interface AuthSession {

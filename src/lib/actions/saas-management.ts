@@ -1,4 +1,4 @@
-import prisma from '../prisma.ts';
+import prisma from '../prisma';
 import { CompanyStatus, SystemRole } from '@prisma/client';
 
 /**
