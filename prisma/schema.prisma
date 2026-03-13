@@ -6,20 +6,116 @@ datasource db {
   provider = "postgresql"
 }
 
+enum CompanyStatus {
+  ACTIVE
+  SUSPENDED
+  TRIAL
+}
+
+enum SystemRole {
+  SAAS_SUPER_ADMIN
+  COMPANY_ADMIN
+  COMPANY_USER
+}
+
 model Company {
+  id              String         @id @default(cuid())
+  name            String
+  email           String         @unique
+  address         String?
+  phone           String?
+  status          CompanyStatus  @default(TRIAL)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  
+  // Subscription Relation
+  planId          String?
+  plan            SubscriptionPlan? @relation(fields: [planId], references: [id])
+  
+  // Feature Modules
+  enabledModules  CompanyModule[]
+
+  branches        Branch[]
+  users           User[]
+  products        Product[]
+  categories      Category[]
+  customers       Customer[]
+  sales           Sale[]
+}
+
+model SubscriptionPlan {
   id          String   @id @default(cuid())
-  name        String
-  email       String   @unique
-  address     String?
-  phone       String?
+  name        String   @unique
+  description String?
+  price       Decimal  @db.Decimal(12, 2)
+  duration    Int      // in days
+  companies   Company[]
+  modules     SystemModule[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  branches    Branch[]
+}
+
+model SystemModule {
+  id          String   @id @default(cuid())
+  code        String   @unique // e.g., 'INVENTORY', 'REPORTS_PRO', 'WORKSHOP'
+  name        String
+  description String?
+  plans       SubscriptionPlan[]
+  companies   CompanyModule[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model CompanyModule {
+  id        String       @id @default(cuid())
+  companyId String
+  company   Company      @relation(fields: [companyId], references: [id])
+  moduleId  String
+  module    SystemModule @relation(fields: [moduleId], references: [id])
+  enabled   Boolean      @default(true)
+  createdAt DateTime     @default(now())
+
+  @@unique([companyId, moduleId])
+}
+
+model Role {
+  id          String       @id @default(cuid())
+  name        String
+  description String?
+  companyId   String?      // Null for global roles (Super Admin)
   users       User[]
-  products    Product[]
-  categories  Category[]
-  customers   Customer[]
-  sales       Sale[]
+  permissions Permission[]
+  createdAt   DateTime     @default(now())
+
+  @@unique([name, companyId])
+}
+
+model Permission {
+  id          String   @id @default(cuid())
+  action      String   // e.g., 'READ_SALES', 'MANAGE_COMPANIES'
+  resource    String   // e.g., 'SALES', 'SAAS_PANEL'
+  roles       Role[]
+  createdAt   DateTime @default(now())
+
+  @@unique([action, resource])
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  password    String
+  name        String?
+  systemRole  SystemRole @default(COMPANY_USER)
+  
+  // RBAC
+  roleId      String?
+  role        Role?      @relation(fields: [roleId], references: [id])
+  
+  companyId   String?    // Null for SaaS Super Admins
+  company     Company?   @relation(fields: [companyId], references: [id])
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Branch {
@@ -33,24 +129,6 @@ model Branch {
   updatedAt   DateTime @updatedAt
   inventory   Inventory[]
   sales       Sale[]
-}
-
-enum Role {
-  ADMIN
-  MANAGER
-  CASHIER
-}
-
-model User {
-  id          String   @id @default(cuid())
-  email       String   @unique
-  password    String
-  name        String?
-  role        Role     @default(CASHIER)
-  companyId   String
-  company     Company  @relation(fields: [companyId], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
 }
 
 model Category {
