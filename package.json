@@ -1,15 +1,18 @@
 {
   "name": "pos-saas",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
     "@prisma/client": "^7.5.0",
     "@types/node": "^25.5.0",
@@ -19,13 +22,14 @@
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.1.6",
     "next": "^16.1.6",
-    "postcss": "^8.5.8",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.1",
+    "postcss": "^8.5.8",
     "prisma": "^7.5.0"
   }
 }
