@@ -1,12 +1,13 @@
-import { getSaaSMetrics, getCompanies } from '@/lib/actions/saas-admin';
+import { getSaaSMetrics, getCompanies, getPlans } from '@/lib/actions/saas-admin';
 import SaaSAdminDashboard from '@/app/components/SaaSAdminDashboard';
 
 export const dynamic = 'force-dynamic';
 
 export default async function SaaSAdminPage() {
-    const [metrics, companies] = await Promise.all([
+    const [metrics, companies, plans] = await Promise.all([
         getSaaSMetrics(),
         getCompanies(),
+        getPlans(),
     ]);
 
     return (
@@ -27,7 +28,7 @@ export default async function SaaSAdminPage() {
                     </p>
                 </header>
 
-                <SaaSAdminDashboard metrics={metrics} companies={companies} />
+                <SaaSAdminDashboard metrics={metrics} companies={companies} plans={plans} />
             </div>
         </div>
     );

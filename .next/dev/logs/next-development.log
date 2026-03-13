@@ -13,3 +13,123 @@
 [00:05:52.119] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
   {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
                                                 ^^^^^^^
+[00:07:38.942] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:07:50.594] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:07:50.776] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:08:50.794] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:58.187] Server  LOG     ✓ Compiled in 1ms
+[00:15:58.552] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:58.553] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:58.554] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:58.554] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:58.555] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:58.560] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:58.682] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:58.733] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:58.779] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:58.829] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:58.840] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:58.876] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:58.956] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:58.960] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:58.988] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:59.032] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:59.062] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:59.096] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:59.151] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:59.265] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:59.328] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:59.366] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:59.396] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:15:59.439] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:16:05.290] Server  WARN    ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+[00:16:05.612] Server  LOG     ✓ Compiled in 294ms
+[00:16:50.355] Server  LOG     ✓ Compiled in 362ms
+[00:17:14.422] Server  LOG     ✓ Compiled in 243ms
+[00:17:28.723] Server  LOG     ✓ Compiled in 165ms
+[00:17:34.441] Server  LOG     ✓ Compiled in 70ms
+[00:17:45.242] Browser ERROR   uncaughtError: Error: Cannot find the middleware module
+[00:17:58.555] Server  LOG     ✓ Compiled in 284ms
+[00:18:00.339] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:18:14.778] Server  LOG     ✓ Compiled in 85ms
+[00:18:32.411] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:18:44.195] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:18:44.196] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ..., modules: ...}
+                                                ^^^^^^^
+[00:18:44.196] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ..., modules: ...}
+                                                ^^^^^^^
+[00:18:44.196] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ..., modules: ...}
+                                                ^^^^^^^
+[00:19:14.483] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:19:14.484] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:19:14.487] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ..., modules: ...}
+                                                ^^^^^^^
+[00:19:14.489] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ..., modules: ...}
+                                                ^^^^^^^
+[00:19:14.491] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ..., modules: ...}
+                                                ^^^^^^^
+[00:20:16.645] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold

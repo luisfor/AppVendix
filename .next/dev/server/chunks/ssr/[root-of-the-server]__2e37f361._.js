@@ -62,9 +62,10 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$
 ;
 const dynamic = 'force-dynamic';
 async function SaaSAdminPage() {
-    const [metrics, companies] = await Promise.all([
+    const [metrics, companies, plans] = await Promise.all([
         (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$actions$2f$saas$2d$admin$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getSaaSMetrics"])(),
-        (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$actions$2f$saas$2d$admin$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getCompanies"])()
+        (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$actions$2f$saas$2d$admin$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getCompanies"])(),
+        (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$actions$2f$saas$2d$admin$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getPlans"])()
     ]);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "min-h-screen",
@@ -81,7 +82,7 @@ async function SaaSAdminPage() {
                                     className: "h-2 w-10 bg-purple-600 rounded-full"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/saas-admin/page.tsx",
-                                    lineNumber: 17,
+                                    lineNumber: 18,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -89,13 +90,13 @@ async function SaaSAdminPage() {
                                     children: "SaaS Control Center"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/saas-admin/page.tsx",
-                                    lineNumber: 18,
+                                    lineNumber: 19,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/saas-admin/page.tsx",
-                            lineNumber: 16,
+                            lineNumber: 17,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -103,7 +104,7 @@ async function SaaSAdminPage() {
                             children: "Administración Global"
                         }, void 0, false, {
                             fileName: "[project]/src/app/saas-admin/page.tsx",
-                            lineNumber: 22,
+                            lineNumber: 23,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -111,32 +112,33 @@ async function SaaSAdminPage() {
                             children: "Panel central para dueños del sistema. Gestione inquilinos, monitoree la salud del negocio y configure el ecosistema modular."
                         }, void 0, false, {
                             fileName: "[project]/src/app/saas-admin/page.tsx",
-                            lineNumber: 25,
+                            lineNumber: 26,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/saas-admin/page.tsx",
-                    lineNumber: 15,
+                    lineNumber: 16,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$SaaSAdminDashboard$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {
                     metrics: metrics,
-                    companies: companies
+                    companies: companies,
+                    plans: plans
                 }, void 0, false, {
                     fileName: "[project]/src/app/saas-admin/page.tsx",
-                    lineNumber: 30,
+                    lineNumber: 31,
                     columnNumber: 17
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/saas-admin/page.tsx",
-            lineNumber: 14,
+            lineNumber: 15,
             columnNumber: 13
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/saas-admin/page.tsx",
-        lineNumber: 13,
+        lineNumber: 14,
         columnNumber: 9
     }, this);
 }

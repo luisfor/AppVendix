@@ -1,11 +1,16 @@
 import { PrismaClient, CompanyStatus, SystemRole } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
 async function main() {
     console.log('--- Iniciando Seeding SaaS Premium con Productos ---');
 
+    const hashedPassword = await bcrypt.hash('secure_password_123', 10);
+    const saasPassword = await bcrypt.hash('admin_password_securo', 10);
+
     // 1. Create Permissions
+    // ... (rest of the permissions code remains same, I'll just keep the structure concise)
     const permissions = [
         { action: 'MANAGE_COMPANIES', resource: 'SAAS_PANEL' },
         { action: 'MANAGE_PLANS', resource: 'SAAS_PANEL' },
@@ -74,6 +79,18 @@ async function main() {
         });
     }
 
+    // New: Super Admin User
+    await prisma.user.upsert({
+        where: { email: 'admin@pos-saas.com' },
+        update: { password: saasPassword },
+        create: {
+            email: 'admin@pos-saas.com',
+            password: saasPassword,
+            name: 'Dueño SaaS',
+            systemRole: SystemRole.SAAS_SUPER_ADMIN,
+        }
+    });
+
     // 5. Farmacia Salud y Vida
     const proPlan = await prisma.subscriptionPlan.findUnique({ where: { name: 'Plan Profesional' }, include: { modules: true } });
     if (proPlan) {
@@ -112,42 +129,48 @@ async function main() {
         // Admin
         await prisma.user.upsert({
             where: { email: 'admin@saludvida.com' },
-            update: { companyId: company.id },
+            update: { companyId: company.id, password: hashedPassword },
             create: {
                 email: 'admin@saludvida.com',
-                password: 'secure',
+                password: hashedPassword,
                 name: 'Admin Farmacia',
                 systemRole: SystemRole.COMPANY_ADMIN,
                 companyId: company.id
             }
         });
 
-        // 6. CATEGORIES & PRODUCTS
-        const categories = ['Medicamentos', 'Higiene', 'Cuidado Personal'];
-        for (const catName of categories) {
-            const category = await prisma.category.upsert({
-                where: { name_companyId: { name: catName, companyId: company.id } },
-                update: {},
-                create: { name: catName, companyId: company.id }
-            });
-
-            const products = catName === 'Medicamentos'
-                ? [
+        // ... (rest of products code)
+        // I'll keep the full main function to avoid partial seed errors
+        const categoriesData = [
+            {
+                name: 'Medicamentos', items: [
                     { name: 'Paracetamol 500mg', price: 0.50, cost: 0.20 },
                     { name: 'Ibuprofeno 400mg', price: 1.20, cost: 0.50 },
                     { name: 'Amoxicilina 500mg', price: 2.50, cost: 1.00 }
                 ]
-                : catName === 'Higiene'
-                    ? [
-                        { name: 'Jabón Líquido', price: 8.50, cost: 4.00 },
-                        { name: 'Pasta Dental', price: 5.90, cost: 2.50 }
-                    ]
-                    : [
-                        { name: 'Bloqueador Solar', price: 45.00, cost: 20.00 },
-                        { name: 'Crema Hidratante', price: 32.00, cost: 15.00 }
-                    ];
+            },
+            {
+                name: 'Higiene', items: [
+                    { name: 'Jabón Líquido', price: 8.50, cost: 4.00 },
+                    { name: 'Pasta Dental', price: 5.90, cost: 2.50 }
+                ]
+            },
+            {
+                name: 'Cuidado Personal', items: [
+                    { name: 'Bloqueador Solar', price: 45.00, cost: 20.00 },
+                    { name: 'Crema Hidratante', price: 32.00, cost: 15.00 }
+                ]
+            }
+        ];
 
-            for (const p of products) {
+        for (const cat of categoriesData) {
+            const category = await prisma.category.upsert({
+                where: { name_companyId: { name: cat.name, companyId: company.id } },
+                update: {},
+                create: { name: cat.name, companyId: company.id }
+            });
+
+            for (const p of cat.items) {
                 const product = await prisma.product.upsert({
                     where: { barcode_companyId: { barcode: `BC-${p.name.substring(0, 3).toUpperCase()}`, companyId: company.id } },
                     update: {},
@@ -161,20 +184,13 @@ async function main() {
                     }
                 });
 
-                // Initial Inventory
                 await prisma.inventory.upsert({
                     where: { productId_branchId: { productId: product.id, branchId: mainBranch.id } },
                     update: {},
-                    create: {
-                        productId: product.id,
-                        branchId: mainBranch.id,
-                        stock: 500
-                    }
+                    create: { productId: product.id, branchId: mainBranch.id, stock: 500 }
                 });
             }
         }
-
-        console.log('✅ Datos maestros (Categorías, Productos e Inventario) creados');
     }
 
     console.log('--- Seeding Finalizado ---');

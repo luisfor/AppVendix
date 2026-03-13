@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma';
 import { CompanyStatus, SystemRole } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
+import bcrypt from 'bcryptjs';
 
 export async function getSaaSMetrics() {
     const [totalCompanies, activeCompanies, totalSales, totalRevenue] = await Promise.all([
@@ -64,11 +65,13 @@ export async function createCompany(data: {
     });
 
     // Create default admin for the new company
+    const hashedPassword = await bcrypt.hash('temporary_password_change_me', 10);
+
     await prisma.user.create({
         data: {
             name: data.adminName,
             email: data.adminEmail,
-            password: 'temporary_password_change_me', // Should be hashed and sent via email
+            password: hashedPassword,
             systemRole: SystemRole.COMPANY_ADMIN,
             companyId: company.id,
         },

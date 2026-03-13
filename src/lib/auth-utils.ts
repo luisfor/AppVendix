@@ -1,65 +1,44 @@
-import prisma from './prisma';
-import { SystemRole, CompanyStatus } from '@prisma/client';
+import { SignJWT, jwtVerify } from 'jose';
+import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
 
-export interface AuthSession {
-    userId: string;
-    systemRole: SystemRole;
-    companyId?: string;
+const secretKey = "secret_app_vendix_saas_key_2026"; // In production, use process.env.JWT_SECRET
+const key = new TextEncoder().encode(secretKey);
+
+export async function encrypt(payload: any) {
+    return await new SignJWT(payload)
+        .setProtectedHeader({ alg: 'HS256' })
+        .setIssuedAt()
+        .setExpirationTime('2h')
+        .sign(key);
 }
 
-/**
- * Middleware conceptual para validar permisos a nivel de base de datos
- * En Next.js App Router, se usa dentro de Server Actions o Layouts
- */
-export async function checkAccess(session: AuthSession, requiredPermission?: { action: string, resource: string }) {
-    // 1. Verificar si el usuario existe
-    const user = await prisma.user.findUnique({
-        where: { id: session.userId },
-        include: {
-            company: true,
-            role: { include: { permissions: true } }
-        },
+export async function decrypt(input: string): Promise<any> {
+    const { payload } = await jwtVerify(input, key, {
+        algorithms: ['HS256'],
     });
-
-    if (!user) throw new Error('Usuario no autorizado');
-
-    // 2. Si pertenece a una empresa, verificar el estado de la misma
-    if (user.companyId && user.companyId !== 'GLOBAL') {
-        if (user.company?.status === CompanyStatus.SUSPENDED) {
-            throw new Error('Su cuenta de empresa ha sido suspendida. Contacte al administrador del sistema.');
-        }
-    }
-
-    // 3. Si es Super Admin, tiene acceso total a todo (opcional, dependiendo de si queremos RBAC estricto incluso para ellos)
-    if (user.systemRole === SystemRole.SAAS_SUPER_ADMIN) {
-        return true;
-    }
-
-    // 4. Verificar permisos específicos
-    if (requiredPermission) {
-        const hasPermission = user.role?.permissions.some(
-            p => p.action === requiredPermission.action && p.resource === requiredPermission.resource
-        );
-
-        if (!hasPermission) {
-            throw new Error(`Permiso denegado: No tiene autorización para ${requiredPermission.action} en ${requiredPermission.resource}`);
-        }
-    }
-
-    return true;
+    return payload;
 }
 
-/**
- * Verifica si un módulo específico está habilitado para la empresa
- */
-export async function isModuleEnabled(companyId: string, moduleCode: string) {
-    const companyModule = await prisma.companyModule.findFirst({
-        where: {
-            companyId,
-            module: { code: moduleCode },
-            enabled: true,
-        },
-    });
+export async function getSession() {
+    const session = (await cookies()).get('session')?.value;
+    if (!session) return null;
+    return await decrypt(session);
+}
 
-    return !!companyModule;
+export async function updateSession(request: NextRequest) {
+    const session = request.cookies.get('session')?.value;
+    if (!session) return;
+
+    // Refresh the session so it doesn't expire
+    const parsed = await decrypt(session);
+    parsed.expires = new Date(Date.now() + 2 * 60 * 60 * 1000);
+    const res = NextResponse.next();
+    res.cookies.set({
+        name: 'session',
+        value: await encrypt(parsed),
+        httpOnly: true,
+        expires: parsed.expires,
+    });
+    return res;
 }
