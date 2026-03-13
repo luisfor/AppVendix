@@ -3,7 +3,7 @@
     "0058438bc3e7de797a5999b235c5f8840c376fe0d5": {
       "workers": {
         "app/saas-admin/page": {
-          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/user.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false,
           "exportedName": "logout",
           "filename": "src/lib/actions/auth.ts"
@@ -18,7 +18,7 @@
     "404c7d125b32a952ebad29a6c426dbacd9559ab7a6": {
       "workers": {
         "app/saas-admin/page": {
-          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/user.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false,
           "exportedName": "login",
           "filename": "src/lib/actions/auth.ts"
@@ -30,10 +30,25 @@
       "exportedName": "login",
       "filename": "src/lib/actions/auth.ts"
     },
+    "40cd0b429aa8adb8d15a139221101e61d09c0fdeb5": {
+      "workers": {
+        "app/saas-admin/page": {
+          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/user.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "updateUserTheme",
+          "filename": "src/lib/actions/user.ts"
+        }
+      },
+      "layer": {
+        "app/saas-admin/page": "action-browser"
+      },
+      "exportedName": "updateUserTheme",
+      "filename": "src/lib/actions/user.ts"
+    },
     "00199757f04c30222a1991c0273d261d778ccd9fc2": {
       "workers": {
         "app/saas-admin/page": {
-          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/user.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false,
           "exportedName": "getCompanies",
           "filename": "src/lib/actions/saas-admin.ts"
@@ -48,7 +63,7 @@
     "0070e7985facf4adaf5e0117d5aa331828c89a13a9": {
       "workers": {
         "app/saas-admin/page": {
-          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/user.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false,
           "exportedName": "getPlans",
           "filename": "src/lib/actions/saas-admin.ts"
@@ -63,7 +78,7 @@
     "00e4e8ae57091ce80d7b9fd4b93a15d3ea08c960f8": {
       "workers": {
         "app/saas-admin/page": {
-          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/user.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false,
           "exportedName": "getSaaSMetrics",
           "filename": "src/lib/actions/saas-admin.ts"
@@ -78,7 +93,7 @@
     "407d569dda344fbf211fda2e5f07a0d724801c05d1": {
       "workers": {
         "app/saas-admin/page": {
-          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/user.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false,
           "exportedName": "createCompany",
           "filename": "src/lib/actions/saas-admin.ts"
@@ -90,10 +105,70 @@
       "exportedName": "createCompany",
       "filename": "src/lib/actions/saas-admin.ts"
     },
+    "4095762965af2315914bfb161cc72fef6aed3fbfa7": {
+      "workers": {
+        "app/saas-admin/page": {
+          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/user.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "getCompanyDetails",
+          "filename": "src/lib/actions/saas-admin.ts"
+        }
+      },
+      "layer": {
+        "app/saas-admin/page": "rsc"
+      },
+      "exportedName": "getCompanyDetails",
+      "filename": "src/lib/actions/saas-admin.ts"
+    },
+    "40cf5e70fd9b40b1b8f2b3f4d42ad3ed222bb62682": {
+      "workers": {
+        "app/saas-admin/page": {
+          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/user.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "softDeleteCompany",
+          "filename": "src/lib/actions/saas-admin.ts"
+        }
+      },
+      "layer": {
+        "app/saas-admin/page": "action-browser"
+      },
+      "exportedName": "softDeleteCompany",
+      "filename": "src/lib/actions/saas-admin.ts"
+    },
+    "40dd38db36b3c2080245c571ec50faed862d8a0364": {
+      "workers": {
+        "app/saas-admin/page": {
+          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/user.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "impersonateCompany",
+          "filename": "src/lib/actions/saas-admin.ts"
+        }
+      },
+      "layer": {
+        "app/saas-admin/page": "action-browser"
+      },
+      "exportedName": "impersonateCompany",
+      "filename": "src/lib/actions/saas-admin.ts"
+    },
+    "6036b3705bf2298f922a6af566f9e15f5fc7f1bf76": {
+      "workers": {
+        "app/saas-admin/page": {
+          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/user.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "updateCompanyPlan",
+          "filename": "src/lib/actions/saas-admin.ts"
+        }
+      },
+      "layer": {
+        "app/saas-admin/page": "action-browser"
+      },
+      "exportedName": "updateCompanyPlan",
+      "filename": "src/lib/actions/saas-admin.ts"
+    },
     "60b6d6d0c7301d1953b47df214225075dbeb920348": {
       "workers": {
         "app/saas-admin/page": {
-          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/user.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
           "async": false,
           "exportedName": "toggleCompanyStatus",
           "filename": "src/lib/actions/saas-admin.ts"

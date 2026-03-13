@@ -42,6 +42,8 @@ model Company {
   categories      Category[]
   customers       Customer[]
   sales           Sale[]
+  
+  deletedAt       DateTime?
 }
 
 model SubscriptionPlan {
@@ -114,6 +116,8 @@ model User {
   
   companyId   String?    // Null for SaaS Super Admins
   company     Company?   @relation(fields: [companyId], references: [id])
+  
+  themePreference String @default("dark")
   
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

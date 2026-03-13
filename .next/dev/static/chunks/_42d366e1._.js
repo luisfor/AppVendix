@@ -2172,7 +2172,8 @@ exports.Prisma.CompanyScalarFieldEnum = {
     status: 'status',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    planId: 'planId'
+    planId: 'planId',
+    deletedAt: 'deletedAt'
 };
 exports.Prisma.SubscriptionPlanScalarFieldEnum = {
     id: 'id',

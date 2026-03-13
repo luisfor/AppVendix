@@ -28,11 +28,18 @@ El sistema incluye un motor de **Feature Flags** que activa funcionalidades din�
 - **Plan Profesional**: POS + Inventario Avanzado + Reportes Pro.
 - **Plan Enterprise**: Acceso total incluyendo Módulo de Taller y Soporte.
 
+### 3. Sistema de Temas (Tema Dinámico)
+- **Persistencia en Base de Datos**: La preferencia del usuario se guarda en el perfil, permitiendo una experiencia consistente en cualquier dispositivo.
+- **Modos**: Oscuro (Default) y Claro, con transiciones suaves y optimización de contraste.
+
+### 4. Pruebas de Extremo a Extremo (E2E)
+- **Playwright**: Suite completa de pruebas automatizadas que cubren flujos críticos de negocio como autenticación, gestión de empresas y cambio de temas.
+
 ## 💻 Stack Tecnológico
-- **Frontend**: Next.js 14+, TypeScript, Tailwind CSS.
+- **Frontend**: Next.js 15+, TypeScript, Tailwind CSS.
 - **Base de Datos**: PostgreSQL para persistencia relacional.
 - **ORM**: Prisma 6 (Optimizado para rendimiento y seguridad de tipos).
-- **Middleware**: Control de acceso granular (RBAC) y validación de Tenant.
+- **Testing**: Playwright (E2E Testing en navegadores reales).
 
 ## 🚀 Instalación y Puesta en Marcha
 
@@ -43,6 +50,7 @@ El sistema incluye un motor de **Feature Flags** que activa funcionalidades din�
 2. **Instalación de Dependencias**:
     ```bash
     npm install
+    npx playwright install chromium --with-deps
     ```
 
 3. **Configuración de Variables de Entorno**:
@@ -54,7 +62,6 @@ El sistema incluye un motor de **Feature Flags** que activa funcionalidades din�
 4. **Preparación de la Base de Datos**:
     ```bash
     npx prisma db push
-    # Re-generar cliente si se realizaron cambios en el esquema
     npx prisma generate
     ```
 
@@ -69,10 +76,22 @@ El sistema incluye un motor de **Feature Flags** que activa funcionalidades din�
     ```
 
 ## 🔍 Verificación del Sistema
-Para validar la integridad del sistema SaaS, puede acceder a las siguientes rutas tras ejecutar el seed:
-- `/sucursales`: Gestión de locales comerciales.
-- `/usuarios`: Administración de personal y roles.
-- `/`: Dashboard principal con métricas en tiempo real.
+
+### Rutas Clave
+- `/saas-admin`: Dashboard Global para el Dueño de la Plataforma.
+- `/auth/login`: Portal de acceso seguro.
+- `/`: Dashboard operativo para empresas cliente.
+
+### Ejecución de Pruebas E2E
+El sistema incluye una suite de pruebas profesional. Para ejecutarlas:
+
+```bash
+# Ejecutar todas las pruebas en modo headless
+npm run test:e2e
+
+# Ejecutar con interfaz visual para depuración
+npm run test:e2e:ui
+```
 
 ---
 *Desarrollado con estándares de ingeniería de software de alto nivel por **Antigravity**.*

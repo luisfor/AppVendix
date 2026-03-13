@@ -62,15 +62,19 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$
 ;
 const dynamic = 'force-dynamic';
 async function SaaSAdminPage() {
-    const [metrics, companies, plans] = await Promise.all([
+    const [metricsRaw, companiesRaw, plansRaw] = await Promise.all([
         (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$actions$2f$saas$2d$admin$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getSaaSMetrics"])(),
         (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$actions$2f$saas$2d$admin$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getCompanies"])(),
         (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$actions$2f$saas$2d$admin$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getPlans"])()
     ]);
+    // Deep serialization for Client Components (handles Decimals, Dates, etc.)
+    const metrics = JSON.parse(JSON.stringify(metricsRaw));
+    const companies = JSON.parse(JSON.stringify(companiesRaw));
+    const plans = JSON.parse(JSON.stringify(plansRaw));
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "min-h-screen",
         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "max-w-7xl mx-auto py-10",
+            className: "max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("header", {
                     className: "mb-10 flex flex-col items-start gap-4",
@@ -82,7 +86,7 @@ async function SaaSAdminPage() {
                                     className: "h-2 w-10 bg-purple-600 rounded-full"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/saas-admin/page.tsx",
-                                    lineNumber: 18,
+                                    lineNumber: 23,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -90,55 +94,56 @@ async function SaaSAdminPage() {
                                     children: "SaaS Control Center"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/saas-admin/page.tsx",
-                                    lineNumber: 19,
+                                    lineNumber: 24,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/saas-admin/page.tsx",
-                            lineNumber: 17,
+                            lineNumber: 22,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                            className: "text-5xl font-black bg-gradient-to-br from-white via-white to-white/20 bg-clip-text text-transparent",
-                            children: "Administración Global"
+                            className: "text-5xl font-black text-[var(--text-main)] tracking-tight",
+                            children: "Dashboard Global"
                         }, void 0, false, {
                             fileName: "[project]/src/app/saas-admin/page.tsx",
-                            lineNumber: 23,
+                            lineNumber: 28,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "text-white/40 max-w-2xl text-lg font-medium",
-                            children: "Panel central para dueños del sistema. Gestione inquilinos, monitoree la salud del negocio y configure el ecosistema modular."
+                            className: "text-[var(--text-dim)] max-w-2xl text-lg font-medium",
+                            children: "Resumen financiero y salud del ecosistema modular."
                         }, void 0, false, {
                             fileName: "[project]/src/app/saas-admin/page.tsx",
-                            lineNumber: 26,
+                            lineNumber: 31,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/saas-admin/page.tsx",
-                    lineNumber: 16,
+                    lineNumber: 21,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$app$2f$components$2f$SaaSAdminDashboard$2e$tsx__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {
                     metrics: metrics,
                     companies: companies,
-                    plans: plans
+                    plans: plans,
+                    hideMetrics: false
                 }, void 0, false, {
                     fileName: "[project]/src/app/saas-admin/page.tsx",
-                    lineNumber: 31,
+                    lineNumber: 36,
                     columnNumber: 17
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/saas-admin/page.tsx",
-            lineNumber: 15,
+            lineNumber: 20,
             columnNumber: 13
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/saas-admin/page.tsx",
-        lineNumber: 14,
+        lineNumber: 19,
         columnNumber: 9
     }, this);
 }

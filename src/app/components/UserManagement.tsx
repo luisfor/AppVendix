@@ -17,36 +17,36 @@ export default function UserManagement({ initialUsers }: { initialUsers: User[] 
             <div className="flex justify-between items-center">
                 <div>
                     <h2 className="text-2xl font-bold">Gestión de Usuarios</h2>
-                    <p className="text-white/40 text-sm">Controla quién tiene acceso a este sistema y sus permisos</p>
+                    <p className="text-[var(--text-dim)] text-sm">Controla quién tiene acceso a este sistema y sus permisos</p>
                 </div>
                 <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition-colors shadow-lg shadow-purple-600/20">
                     + Nuevo Usuario
                 </button>
             </div>
 
-            <div className="glass-card rounded-2xl overflow-hidden border border-white/5">
+            <div className="glass-card rounded-2xl overflow-hidden border border-[var(--border-dim)]">
                 <table className="w-full text-left border-collapse">
                     <thead>
-                        <tr className="border-b border-white/10 bg-white/5">
-                            <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-white/40">Nombre</th>
-                            <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-white/40">Email</th>
-                            <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-white/40">Rol</th>
-                            <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-white/40">Estado</th>
-                            <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-white/40 text-right">Acciones</th>
+                        <tr className="border-b border-[var(--border-dim)] bg-[var(--text-dim)]/[0.02]">
+                            <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-[var(--text-dim)]">Nombre</th>
+                            <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-[var(--text-dim)]">Email</th>
+                            <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-[var(--text-dim)]">Rol</th>
+                            <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-[var(--text-dim)]">Estado</th>
+                            <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-var(--text-dim)] text-right">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/5">
+                    <tbody className="divide-y divide-[var(--border-dim)]">
                         {users.map((user) => (
-                            <tr key={user.id} className="hover:bg-white/5 transition-colors group">
+                            <tr key={user.id} className="hover:bg-[var(--text-dim)]/[0.02] transition-colors group">
                                 <td className="px-6 py-4">
                                     <div className="flex items-center gap-3">
-                                        <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-purple-500/20 to-blue-500/20 border border-white/10 flex items-center justify-center text-xs font-bold">
+                                        <div className="h-8 w-8 rounded-full bg-[var(--text-dim)]/10 border border-[var(--border-dim)] flex items-center justify-center text-xs font-bold text-[var(--text-main)]">
                                             {user.name?.charAt(0) || 'U'}
                                         </div>
                                         <span className="text-sm font-medium">{user.name || 'Sin nombre'}</span>
                                     </div>
                                 </td>
-                                <td className="px-6 py-4 text-sm text-white/60">{user.email}</td>
+                                <td className="px-6 py-4 text-sm text-[var(--text-main)]/60">{user.email}</td>
                                 <td className="px-6 py-4">
                                     <span className="text-[10px] font-bold px-2 py-1 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">
                                         {user.role?.name || 'Usuario'}
@@ -59,7 +59,7 @@ export default function UserManagement({ initialUsers }: { initialUsers: User[] 
                                     </span>
                                 </td>
                                 <td className="px-6 py-4 text-right">
-                                    <button className="text-white/40 hover:text-white transition-colors text-xs font-bold uppercase tracking-widest">
+                                    <button className="text-[var(--text-dim)] hover:text-[var(--text-main)] transition-colors text-xs font-bold uppercase tracking-widest">
                                         Editar
                                     </button>
                                 </td>

@@ -41,6 +41,7 @@ export async function login(formData: FormData) {
         email: user.email,
         role: user.systemRole,
         companyId: user.companyId,
+        themePreference: user.themePreference,
         expires
     });
 

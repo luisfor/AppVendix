@@ -4,15 +4,20 @@ import SaaSAdminDashboard from '@/app/components/SaaSAdminDashboard';
 export const dynamic = 'force-dynamic';
 
 export default async function SaaSAdminPage() {
-    const [metrics, companies, plans] = await Promise.all([
+    const [metricsRaw, companiesRaw, plansRaw] = await Promise.all([
         getSaaSMetrics(),
         getCompanies(),
         getPlans(),
     ]);
 
+    // Deep serialization for Client Components (handles Decimals, Dates, etc.)
+    const metrics = JSON.parse(JSON.stringify(metricsRaw));
+    const companies = JSON.parse(JSON.stringify(companiesRaw));
+    const plans = JSON.parse(JSON.stringify(plansRaw));
+
     return (
         <div className="min-h-screen">
-            <div className="max-w-7xl mx-auto py-10">
+            <div className="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
                 <header className="mb-10 flex flex-col items-start gap-4">
                     <div className="flex items-center gap-3 mb-2">
                         <div className="h-2 w-10 bg-purple-600 rounded-full" />
@@ -20,15 +25,15 @@ export default async function SaaSAdminPage() {
                             SaaS Control Center
                         </span>
                     </div>
-                    <h1 className="text-5xl font-black bg-gradient-to-br from-white via-white to-white/20 bg-clip-text text-transparent">
-                        Administración Global
+                    <h1 className="text-5xl font-black text-[var(--text-main)] tracking-tight">
+                        Dashboard Global
                     </h1>
-                    <p className="text-white/40 max-w-2xl text-lg font-medium">
-                        Panel central para dueños del sistema. Gestione inquilinos, monitoree la salud del negocio y configure el ecosistema modular.
+                    <p className="text-[var(--text-dim)] max-w-2xl text-lg font-medium">
+                        Resumen financiero y salud del ecosistema modular.
                     </p>
                 </header>
 
-                <SaaSAdminDashboard metrics={metrics} companies={companies} plans={plans} />
+                <SaaSAdminDashboard metrics={metrics} companies={companies} plans={plans} hideMetrics={false} />
             </div>
         </div>
     );

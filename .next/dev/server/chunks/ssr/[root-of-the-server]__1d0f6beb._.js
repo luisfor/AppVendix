@@ -368,13 +368,54 @@ async function RootLayout({ children }) {
 }
 ;
 function Sidebar({ companyName, planName, modules, isSuperAdmin }) {
-    const menuItems = [
+    const superAdminItems = [
         {
-            name: 'SaaS Admin',
-            icon: '👑',
-            href: '/saas-admin',
-            superOnly: true
+            name: 'Dashboard',
+            icon: '📊',
+            href: '/saas-admin'
         },
+        {
+            name: 'Empresas',
+            icon: '🏢',
+            href: '/saas-admin/companies'
+        },
+        {
+            name: 'Planes',
+            icon: '💎',
+            href: '/saas-admin/plans'
+        },
+        {
+            name: 'Facturación',
+            icon: '💳',
+            href: '/saas-admin/billing'
+        },
+        {
+            name: 'Módulos',
+            icon: '🧩',
+            href: '/saas-admin/modules'
+        },
+        {
+            name: 'Ajustes',
+            icon: '⚙️',
+            href: '/saas-admin/settings'
+        },
+        {
+            name: 'Auditoría',
+            icon: '📜',
+            href: '/saas-admin/audit'
+        },
+        {
+            name: 'Administradores',
+            icon: '👤',
+            href: '/saas-admin/admins'
+        },
+        {
+            name: 'Seguridad',
+            icon: '🔒',
+            href: '/saas-admin/security'
+        }
+    ];
+    const companyItems = [
         {
             name: 'Inicio',
             icon: '🏠',
@@ -420,48 +461,47 @@ function Sidebar({ companyName, planName, modules, isSuperAdmin }) {
             href: '#'
         }
     ];
+    const menuItems = isSuperAdmin ? superAdminItems : companyItems;
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("aside", {
         className: "w-64 border-r border-white/10 bg-[#0a0a0b] flex flex-col hidden lg:flex",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "h-16 flex items-center px-6 border-b border-white/10",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$react$2d$server$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {
-                    href: "/",
+                    href: isSuperAdmin ? "/saas-admin" : "/",
                     className: "flex items-center gap-2 hover:opacity-80 transition-opacity",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "h-8 w-8 bg-purple-600 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-purple-600/30",
-                            children: "A"
+                            children: isSuperAdmin ? 'S' : 'A'
                         }, void 0, false, {
                             fileName: "[project]/src/app/layout.tsx",
-                            lineNumber: 100,
+                            lineNumber: 113,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                             className: "text-xl font-bold tracking-tight",
-                            children: "AppVendix"
+                            children: isSuperAdmin ? 'SaaS Central' : 'AppVendix'
                         }, void 0, false, {
                             fileName: "[project]/src/app/layout.tsx",
-                            lineNumber: 103,
+                            lineNumber: 116,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/layout.tsx",
-                    lineNumber: 99,
+                    lineNumber: 112,
                     columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/layout.tsx",
-                lineNumber: 98,
+                lineNumber: 111,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
                 className: "flex-1 py-6 space-y-1 overflow-y-auto",
                 children: menuItems.map((item)=>{
-                    // Super Admin check
-                    if (item.superOnly && !isSuperAdmin) return null;
-                    // Feature Flag check
+                    // Feature Flag check for company items
                     if (item.moduleCode && !modules.includes(item.moduleCode)) return null;
                     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$react$2d$server$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"], {
                         href: item.href,
@@ -472,7 +512,7 @@ function Sidebar({ companyName, planName, modules, isSuperAdmin }) {
                                 children: item.icon
                             }, void 0, false, {
                                 fileName: "[project]/src/app/layout.tsx",
-                                lineNumber: 120,
+                                lineNumber: 130,
                                 columnNumber: 29
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -480,19 +520,19 @@ function Sidebar({ companyName, planName, modules, isSuperAdmin }) {
                                 children: item.name
                             }, void 0, false, {
                                 fileName: "[project]/src/app/layout.tsx",
-                                lineNumber: 121,
+                                lineNumber: 131,
                                 columnNumber: 29
                             }, this)
                         ]
                     }, item.name, true, {
                         fileName: "[project]/src/app/layout.tsx",
-                        lineNumber: 115,
+                        lineNumber: 125,
                         columnNumber: 25
                     }, this);
                 })
             }, void 0, false, {
                 fileName: "[project]/src/app/layout.tsx",
-                lineNumber: 106,
+                lineNumber: 119,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -506,7 +546,7 @@ function Sidebar({ companyName, planName, modules, isSuperAdmin }) {
                                 children: isSuperAdmin ? 'Full Access' : planName
                             }, void 0, false, {
                                 fileName: "[project]/src/app/layout.tsx",
-                                lineNumber: 128,
+                                lineNumber: 138,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -515,12 +555,12 @@ function Sidebar({ companyName, planName, modules, isSuperAdmin }) {
                                     className: "bg-purple-600 h-full w-full shadow-sm shadow-purple-600/50"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/layout.tsx",
-                                    lineNumber: 130,
+                                    lineNumber: 140,
                                     columnNumber: 25
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/app/layout.tsx",
-                                lineNumber: 129,
+                                lineNumber: 139,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -528,13 +568,13 @@ function Sidebar({ companyName, planName, modules, isSuperAdmin }) {
                                 children: isSuperAdmin ? 'AppVendix Platform' : companyName
                             }, void 0, false, {
                                 fileName: "[project]/src/app/layout.tsx",
-                                lineNumber: 132,
+                                lineNumber: 142,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/layout.tsx",
-                        lineNumber: 127,
+                        lineNumber: 137,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -547,31 +587,31 @@ function Sidebar({ companyName, planName, modules, isSuperAdmin }) {
                                     children: "🚪"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/layout.tsx",
-                                    lineNumber: 137,
+                                    lineNumber: 147,
                                     columnNumber: 25
                                 }, this),
                                 "Cerrar Sesión"
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/layout.tsx",
-                            lineNumber: 136,
+                            lineNumber: 146,
                             columnNumber: 21
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/layout.tsx",
-                        lineNumber: 135,
+                        lineNumber: 145,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/layout.tsx",
-                lineNumber: 126,
+                lineNumber: 136,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/layout.tsx",
-        lineNumber: 97,
+        lineNumber: 110,
         columnNumber: 9
     }, this);
 }
