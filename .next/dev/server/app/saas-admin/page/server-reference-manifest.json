@@ -1,0 +1,80 @@
+{
+  "node": {
+    "00199757f04c30222a1991c0273d261d778ccd9fc2": {
+      "workers": {
+        "app/saas-admin/page": {
+          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "getCompanies",
+          "filename": "src/lib/actions/saas-admin.ts"
+        }
+      },
+      "layer": {
+        "app/saas-admin/page": "rsc"
+      },
+      "exportedName": "getCompanies",
+      "filename": "src/lib/actions/saas-admin.ts"
+    },
+    "0070e7985facf4adaf5e0117d5aa331828c89a13a9": {
+      "workers": {
+        "app/saas-admin/page": {
+          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "getPlans",
+          "filename": "src/lib/actions/saas-admin.ts"
+        }
+      },
+      "layer": {
+        "app/saas-admin/page": "rsc"
+      },
+      "exportedName": "getPlans",
+      "filename": "src/lib/actions/saas-admin.ts"
+    },
+    "00e4e8ae57091ce80d7b9fd4b93a15d3ea08c960f8": {
+      "workers": {
+        "app/saas-admin/page": {
+          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "getSaaSMetrics",
+          "filename": "src/lib/actions/saas-admin.ts"
+        }
+      },
+      "layer": {
+        "app/saas-admin/page": "rsc"
+      },
+      "exportedName": "getSaaSMetrics",
+      "filename": "src/lib/actions/saas-admin.ts"
+    },
+    "407d569dda344fbf211fda2e5f07a0d724801c05d1": {
+      "workers": {
+        "app/saas-admin/page": {
+          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "createCompany",
+          "filename": "src/lib/actions/saas-admin.ts"
+        }
+      },
+      "layer": {
+        "app/saas-admin/page": "rsc"
+      },
+      "exportedName": "createCompany",
+      "filename": "src/lib/actions/saas-admin.ts"
+    },
+    "60b6d6d0c7301d1953b47df214225075dbeb920348": {
+      "workers": {
+        "app/saas-admin/page": {
+          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "toggleCompanyStatus",
+          "filename": "src/lib/actions/saas-admin.ts"
+        }
+      },
+      "layer": {
+        "app/saas-admin/page": "action-browser"
+      },
+      "exportedName": "toggleCompanyStatus",
+      "filename": "src/lib/actions/saas-admin.ts"
+    }
+  },
+  "edge": {}
+}

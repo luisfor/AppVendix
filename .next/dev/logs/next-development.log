@@ -1,5 +1,15 @@
-[00:00:01.171] Server  LOG     ✓ Ready in 807ms
-[00:00:02.214] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:02.392] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:15.852] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:27.179] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:01.414] Server  LOG     ✓ Ready in 957ms
+[00:00:07.275] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:18.706] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:04:18.150] Server  LOG     ✓ Compiled in 176ms
+[00:04:25.239] Server  LOG     ✓ Compiled in 0ms
+[00:05:20.988] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:05:21.377] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:05:38.601] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^
+[00:05:52.119] Server  ERROR   Only plain objects can be passed to Client Components from Server Components. Decimal objects are not supported.
+  {id: ..., name: ..., description: ..., price: Decimal, duration: ..., createdAt: ..., updatedAt: ...}
+                                                ^^^^^^^

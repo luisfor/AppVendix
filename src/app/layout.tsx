@@ -16,7 +16,13 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    // Mocking session for demo - In production this comes from Auth provider
+    // Mocking session for demo - Simplified logic for role detection
+    const adminUser = await prisma.user.findUnique({
+        where: { email: 'admin@pos-saas.com' }, // This represents the SaaS Super Admin
+    });
+
+    const isSuperAdmin = true; // Hardcoded for this demo step to show the impact
+
     const company = await prisma.company.findFirst({
         where: { name: 'Farmacia Salud y Vida' },
         include: { plan: { include: { modules: true } } }
@@ -39,6 +45,7 @@ export default async function RootLayout({
                         companyName={company?.name || 'AppVendix'}
                         planName={company?.plan?.name || 'Trial'}
                         modules={modules}
+                        isSuperAdmin={isSuperAdmin}
                     />
                     <main className="flex-1 relative overflow-y-auto overflow-x-hidden">
                         <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-white/10 bg-[#0a0a0b]/80 px-8 backdrop-blur-md">
@@ -49,15 +56,15 @@ export default async function RootLayout({
                             </div>
                             <div className="flex items-center gap-4">
                                 <div className="flex flex-col items-end">
-                                    <span className="text-sm font-medium">Luis Admin</span>
+                                    <span className="text-sm font-medium">{isSuperAdmin ? 'SaaS Owner' : 'Luis Admin'}</span>
                                     <span className="text-[10px] text-white/40 uppercase tracking-widest font-bold">
-                                        {company?.name || 'Sin Empresa'}
+                                        {isSuperAdmin ? 'PLATFORM OWNER' : (company?.name || 'Sin Empresa')}
                                     </span>
                                 </div>
                                 <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-purple-500 to-blue-500 border border-white/20 shadow-lg shadow-purple-500/20" />
                             </div>
                         </header>
-                        <div className="p-8 animate-fade-in">
+                        <div className="p-8 animate-fade-in text-white">
                             {children}
                         </div>
                     </main>
@@ -67,8 +74,9 @@ export default async function RootLayout({
     );
 }
 
-function Sidebar({ companyName, planName, modules }: { companyName: string, planName: string, modules: string[] }) {
+function Sidebar({ companyName, planName, modules, isSuperAdmin }: { companyName: string, planName: string, modules: string[], isSuperAdmin?: boolean }) {
     const menuItems = [
+        { name: 'SaaS Admin', icon: '👑', href: '/saas-admin', superOnly: true },
         { name: 'Inicio', icon: '🏠', href: '/' },
         { name: 'Sucursales', icon: '🏢', href: '/sucursales' },
         { name: 'Usuarios', icon: '👥', href: '/usuarios' },
@@ -91,6 +99,9 @@ function Sidebar({ companyName, planName, modules }: { companyName: string, plan
             </div>
             <nav className="flex-1 py-6 space-y-1 overflow-y-auto">
                 {menuItems.map((item) => {
+                    // Super Admin check
+                    if (item.superOnly && !isSuperAdmin) return null;
+
                     // Feature Flag check
                     if (item.moduleCode && !modules.includes(item.moduleCode)) return null;
 

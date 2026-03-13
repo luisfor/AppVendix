@@ -3,7 +3,7 @@ import { PrismaClient, CompanyStatus, SystemRole } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-    console.log('--- Iniciando Seeding SaaS Premium ---');
+    console.log('--- Iniciando Seeding SaaS Premium con Productos ---');
 
     // 1. Create Permissions
     const permissions = [
@@ -23,42 +23,22 @@ async function main() {
             create: p,
         });
     }
-    console.log('✅ Permisos creados');
 
-    // 2. Create Global Role (Super Admin)
+    // 2. Create Global Role
     const superAdminRole = await prisma.role.upsert({
         where: { name_companyId: { name: 'Super Administrador SaaS', companyId: 'GLOBAL' } },
         update: {},
         create: {
             name: 'Super Administrador SaaS',
-            description: 'Dueño del sistema con acceso total',
+            description: 'Acceso total',
             companyId: 'GLOBAL',
             permissions: {
-                connect: [
-                    { action_resource: { action: 'MANAGE_COMPANIES', resource: 'SAAS_PANEL' } },
-                    { action_resource: { action: 'MANAGE_PLANS', resource: 'SAAS_PANEL' } },
-                    { action_resource: { action: 'VIEW_GLOBAL_METRICS', resource: 'SAAS_PANEL' } },
-                ],
+                connect: permissions.filter(p => p.resource === 'SAAS_PANEL').map(p => ({ action_resource: { action: p.action, resource: p.resource } })),
             },
         },
     });
-    console.log('✅ Rol de Super Admin creado');
 
-    // 3. Create SaaS Super Admin User
-    await prisma.user.upsert({
-        where: { email: 'admin@pos-saas.com' },
-        update: {},
-        create: {
-            email: 'admin@pos-saas.com',
-            password: 'admin_password_securo',
-            name: 'SaaS Owner',
-            systemRole: SystemRole.SAAS_SUPER_ADMIN,
-            roleId: superAdminRole.id,
-        },
-    });
-    console.log('✅ Usuario Super Admin creado');
-
-    // 4. Create System Modules
+    // 3. System Modules
     const modules = [
         { code: 'POS_BASIC', name: 'Punto de Venta Básico' },
         { code: 'INVENTORY', name: 'Gestión de Inventario' },
@@ -73,31 +53,12 @@ async function main() {
             create: m,
         });
     }
-    console.log('✅ Módulos del sistema creados');
 
-    // 5. Create Subscription Plans
+    // 4. Plans
     const plans = [
-        {
-            name: 'Plan Básico',
-            description: 'Ideal para pequeños negocios',
-            price: 29.90,
-            duration: 30,
-            moduleCodes: ['POS_BASIC', 'INVENTORY'],
-        },
-        {
-            name: 'Plan Profesional',
-            description: 'Para empresas en crecimiento',
-            price: 59.90,
-            duration: 30,
-            moduleCodes: ['POS_BASIC', 'INVENTORY', 'REPORTS_PRO'],
-        },
-        {
-            name: 'Plan Enterprise',
-            description: 'Acceso total y soporte prioritario',
-            price: 99.90,
-            duration: 30,
-            moduleCodes: ['POS_BASIC', 'INVENTORY', 'REPORTS_PRO', 'WORKSHOP'],
-        },
+        { name: 'Plan Básico', price: 29.90, modules: ['POS_BASIC', 'INVENTORY'] },
+        { name: 'Plan Profesional', price: 59.90, modules: ['POS_BASIC', 'INVENTORY', 'REPORTS_PRO'] },
+        { name: 'Plan Enterprise', price: 99.90, modules: ['POS_BASIC', 'INVENTORY', 'REPORTS_PRO', 'WORKSHOP'] },
     ];
 
     for (const p of plans) {
@@ -106,23 +67,15 @@ async function main() {
             update: {},
             create: {
                 name: p.name,
-                description: p.description,
                 price: p.price,
-                duration: p.duration,
-                modules: {
-                    connect: p.moduleCodes.map(code => ({ code })),
-                },
-            },
+                duration: 30,
+                modules: { connect: p.modules.map(code => ({ code })) }
+            }
         });
     }
-    console.log('✅ Planes de suscripción creados');
 
-    // 6. Create Test Company (Farmacia Salud y Vida)
-    const proPlan = await prisma.subscriptionPlan.findUnique({
-        where: { name: 'Plan Profesional' },
-        include: { modules: true }
-    });
-
+    // 5. Farmacia Salud y Vida
+    const proPlan = await prisma.subscriptionPlan.findUnique({ where: { name: 'Plan Profesional' }, include: { modules: true } });
     if (proPlan) {
         const company = await prisma.company.upsert({
             where: { email: 'contacto@saludvida.com' },
@@ -135,7 +88,7 @@ async function main() {
             },
         });
 
-        // Enabled Modules for Company
+        // Modules
         for (const mod of proPlan.modules) {
             await prisma.companyModule.upsert({
                 where: { companyId_moduleId: { companyId: company.id, moduleId: mod.id } },
@@ -144,63 +97,87 @@ async function main() {
             });
         }
 
-        // Default Company Admin Role
-        const adminRole = await prisma.role.upsert({
-            where: { name_companyId: { name: 'Administrador de Empresa', companyId: company.id } },
+        // Branch
+        const mainBranch = await prisma.branch.upsert({
+            where: { id: 'branch-master-1' },
             update: {},
             create: {
-                name: 'Administrador de Empresa',
-                description: 'Acceso total dentro de su propia empresa',
-                companyId: company.id,
-                permissions: {
-                    connect: [
-                        { action_resource: { action: 'MANAGE_BRANCHES', resource: 'COMPANY' } },
-                        { action_resource: { action: 'MANAGE_USERS', resource: 'COMPANY' } },
-                        { action_resource: { action: 'MANAGE_INVENTORY', resource: 'INVENTORY' } },
-                        { action_resource: { action: 'SELL_PRODUCTS', resource: 'POS' } },
-                    ],
-                },
-            },
-        });
-
-        // Create Initial Admin User for Company
-        await prisma.user.upsert({
-            where: { email: 'admin@saludvida.com' },
-            update: { companyId: company.id, roleId: adminRole.id },
-            create: {
-                email: 'admin@saludvida.com',
-                password: 'secure_password_123',
-                name: 'Administrador Farmacia',
-                systemRole: SystemRole.COMPANY_ADMIN,
-                companyId: company.id,
-                roleId: adminRole.id,
-            },
-        });
-
-        // Create a default branch
-        await prisma.branch.upsert({
-            where: { id: 'default-branch-1' }, // Specific ID for upsert in seed
-            update: {},
-            create: {
-                id: 'default-branch-1',
-                name: 'Sucursal Principal - Lima',
-                address: 'Av. Universitaria 1234',
-                phone: '01 456-7890',
-                companyId: company.id,
+                id: 'branch-master-1',
+                name: 'Farmacia Salud y Vida - Central',
+                address: 'Av. Larco 456, Miraflores',
+                companyId: company.id
             }
         });
 
-        console.log('✅ Empresa de prueba "Farmacia Salud y Vida" creada con éxito');
+        // Admin
+        await prisma.user.upsert({
+            where: { email: 'admin@saludvida.com' },
+            update: { companyId: company.id },
+            create: {
+                email: 'admin@saludvida.com',
+                password: 'secure',
+                name: 'Admin Farmacia',
+                systemRole: SystemRole.COMPANY_ADMIN,
+                companyId: company.id
+            }
+        });
+
+        // 6. CATEGORIES & PRODUCTS
+        const categories = ['Medicamentos', 'Higiene', 'Cuidado Personal'];
+        for (const catName of categories) {
+            const category = await prisma.category.upsert({
+                where: { name_companyId: { name: catName, companyId: company.id } },
+                update: {},
+                create: { name: catName, companyId: company.id }
+            });
+
+            const products = catName === 'Medicamentos'
+                ? [
+                    { name: 'Paracetamol 500mg', price: 0.50, cost: 0.20 },
+                    { name: 'Ibuprofeno 400mg', price: 1.20, cost: 0.50 },
+                    { name: 'Amoxicilina 500mg', price: 2.50, cost: 1.00 }
+                ]
+                : catName === 'Higiene'
+                    ? [
+                        { name: 'Jabón Líquido', price: 8.50, cost: 4.00 },
+                        { name: 'Pasta Dental', price: 5.90, cost: 2.50 }
+                    ]
+                    : [
+                        { name: 'Bloqueador Solar', price: 45.00, cost: 20.00 },
+                        { name: 'Crema Hidratante', price: 32.00, cost: 15.00 }
+                    ];
+
+            for (const p of products) {
+                const product = await prisma.product.upsert({
+                    where: { barcode_companyId: { barcode: `BC-${p.name.substring(0, 3).toUpperCase()}`, companyId: company.id } },
+                    update: {},
+                    create: {
+                        name: p.name,
+                        barcode: `BC-${p.name.substring(0, 3).toUpperCase()}`,
+                        salePrice: p.price,
+                        costPrice: p.cost,
+                        categoryId: category.id,
+                        companyId: company.id
+                    }
+                });
+
+                // Initial Inventory
+                await prisma.inventory.upsert({
+                    where: { productId_branchId: { productId: product.id, branchId: mainBranch.id } },
+                    update: {},
+                    create: {
+                        productId: product.id,
+                        branchId: mainBranch.id,
+                        stock: 500
+                    }
+                });
+            }
+        }
+
+        console.log('✅ Datos maestros (Categorías, Productos e Inventario) creados');
     }
 
-    console.log('--- Seeding Premium Completado ---');
+    console.log('--- Seeding Finalizado ---');
 }
 
-main()
-    .catch((e) => {
-        console.error(e);
-        process.exit(1);
-    })
-    .finally(async () => {
-        await prisma.$disconnect();
-    });
+main().catch(console.error).finally(() => prisma.$disconnect());
