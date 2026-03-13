@@ -14,7 +14,7 @@ export default function BranchManagement({ initialBranches }: { initialBranches:
     const [showAdd, setShowAdd] = useState(false);
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 text-white">
             <div className="flex justify-between items-center">
                 <div>
                     <h2 className="text-2xl font-bold">Gestión de Sucursales</h2>
@@ -64,7 +64,7 @@ export default function BranchManagement({ initialBranches }: { initialBranches:
 
             {showAdd && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-                    <div className="glass-card w-full max-w-md rounded-2xl p-8 border border-white/10 animate-fade-in text-white">
+                    <div className="glass-card w-full max-w-md rounded-2xl p-8 border border-white/10 animate-fade-in">
                         <h3 className="text-xl font-bold mb-6">Agregar Nueva Sucursal</h3>
                         <div className="space-y-4">
                             <div>
