@@ -26,6 +26,7 @@ export default function SaaSAdminDashboard({ metrics, companies, plans, hideMetr
     const [loading, setLoading] = useState<string | null>(null);
     const [showModal, setShowModal] = useState(false);
     const [showPlanModal, setShowPlanModal] = useState<{ id: string, planId: string } | null>(null);
+    const [showToggleModal, setShowToggleModal] = useState<{ id: string, name: string, status: CompanyStatus } | null>(null);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -34,10 +35,12 @@ export default function SaaSAdminDashboard({ metrics, companies, plans, hideMetr
         adminEmail: '',
     });
 
-    const handleToggleStatus = async (id: string, status: CompanyStatus) => {
-        setLoading(id);
-        await toggleCompanyStatus(id, status);
+    const confirmToggleStatus = async () => {
+        if (!showToggleModal) return;
+        setLoading(showToggleModal.id);
+        await toggleCompanyStatus(showToggleModal.id, showToggleModal.status);
         setLoading(null);
+        setShowToggleModal(null);
     };
 
     const handleSoftDelete = async (id: string) => {
@@ -173,7 +176,7 @@ export default function SaaSAdminDashboard({ metrics, companies, plans, hideMetr
                                     <td className="px-8 py-5 text-right">
                                         <div className="flex items-center justify-end gap-3 text-lg">
                                             <button
-                                                onClick={() => handleToggleStatus(company.id, company.status)}
+                                                onClick={() => setShowToggleModal({ id: company.id, name: company.name, status: company.status })}
                                                 disabled={loading === company.id}
                                                 className={`text-[9px] px-3 py-1.5 rounded-lg font-black uppercase tracking-tighter transition-all border ${company.status === CompanyStatus.ACTIVE
                                                     ? 'text-rose-500/60 border-rose-500/10 hover:bg-rose-500/10'
@@ -333,6 +336,40 @@ export default function SaaSAdminDashboard({ metrics, companies, plans, hideMetr
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+            {/* Toggle Status Modal */}
+            {showToggleModal && (
+                <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setShowToggleModal(null)} />
+                    <div className="glass-card w-full max-w-md rounded-[2.5rem] p-10 relative z-10 shadow-3xl animate-in zoom-in-95 fade-in duration-300 text-center">
+                        <div className={`mx-auto h-20 w-20 rounded-full flex items-center justify-center text-4xl mb-6 shadow-xl ${showToggleModal.status === CompanyStatus.ACTIVE ? 'bg-rose-500/20 text-rose-500 shadow-rose-500/20' : 'bg-emerald-500/20 text-emerald-500 shadow-emerald-500/20'}`}>
+                            {showToggleModal.status === CompanyStatus.ACTIVE ? '⚠️' : '✅'}
+                        </div>
+                        <h2 className="text-2xl font-black mb-4 text-[var(--text-main)]">
+                            {showToggleModal.status === CompanyStatus.ACTIVE ? '¿Suspender Empresa?' : '¿Activar Empresa?'}
+                        </h2>
+                        <p className="text-[var(--text-dim)] mb-8 text-lg">
+                            ¿Estás seguro que deseas {showToggleModal.status === CompanyStatus.ACTIVE ? 'suspender' : 'activar'} el acceso a la empresa <br /><span className="font-bold text-[var(--text-main)]">{showToggleModal.name}</span>?
+                        </p>
+                        <div className="flex gap-4 pt-4">
+                            <button
+                                onClick={() => setShowToggleModal(null)}
+                                className="flex-1 py-3.5 rounded-2xl font-bold bg-[var(--text-dim)]/10 text-[var(--text-dim)] hover:bg-[var(--text-dim)]/20 hover:text-[var(--text-main)] transition-colors"
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                onClick={confirmToggleStatus}
+                                disabled={loading === showToggleModal.id}
+                                className={`flex-1 py-3.5 rounded-2xl font-black transition-all shadow-xl disabled:opacity-50 ${showToggleModal.status === CompanyStatus.ACTIVE ? 'bg-rose-500 text-white shadow-rose-500/30 hover:bg-rose-600' : 'bg-emerald-500 text-white shadow-emerald-500/30 hover:bg-emerald-600'}`}
+                            >
+                                {loading === showToggleModal.id
+                                    ? 'Procesando...'
+                                    : (showToggleModal.status === CompanyStatus.ACTIVE ? 'Sí, Suspender' : 'Sí, Activar')}
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

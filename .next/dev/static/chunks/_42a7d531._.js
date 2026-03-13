@@ -115,6 +115,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [showModal, setShowModal] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [showPlanModal, setShowPlanModal] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [showToggleModal, setShowToggleModal] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [formData, setFormData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
         name: '',
         email: '',
@@ -122,10 +123,12 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
         adminName: '',
         adminEmail: ''
     });
-    const handleToggleStatus = async (id, status)=>{
-        setLoading(id);
-        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$actions$2f$data$3a$352e49__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$text$2f$javascript$3e$__["toggleCompanyStatus"])(id, status);
+    const confirmToggleStatus = async ()=>{
+        if (!showToggleModal) return;
+        setLoading(showToggleModal.id);
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$actions$2f$data$3a$352e49__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$text$2f$javascript$3e$__["toggleCompanyStatus"])(showToggleModal.id, showToggleModal.status);
         setLoading(null);
+        setShowToggleModal(null);
     };
     const handleSoftDelete = async (id)=>{
         if (confirm('¿Está seguro de eliminar esta empresa? Podrá restaurarla luego.')) {
@@ -219,7 +222,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                 children: m.icon
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                lineNumber: 91,
+                                lineNumber: 94,
                                 columnNumber: 29
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -227,7 +230,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                 children: m.label
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                lineNumber: 94,
+                                lineNumber: 97,
                                 columnNumber: 29
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -235,7 +238,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                 children: m.value
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                lineNumber: 95,
+                                lineNumber: 98,
                                 columnNumber: 29
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -243,18 +246,18 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                 children: m.sub
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                lineNumber: 96,
+                                lineNumber: 99,
                                 columnNumber: 29
                             }, this)
                         ]
                     }, m.label, true, {
                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                        lineNumber: 90,
+                        lineNumber: 93,
                         columnNumber: 25
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                lineNumber: 81,
+                lineNumber: 84,
                 columnNumber: 17
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -270,7 +273,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                         children: "Gestión de Clientes SaaS"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                        lineNumber: 106,
+                                        lineNumber: 109,
                                         columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -278,13 +281,13 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                         children: "Refactored: Acceso total a operaciones de inquilinos"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                        lineNumber: 107,
+                                        lineNumber: 110,
                                         columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                lineNumber: 105,
+                                lineNumber: 108,
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -295,20 +298,20 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                         children: "+"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                        lineNumber: 113,
+                                        lineNumber: 116,
                                         columnNumber: 25
                                     }, this),
                                     " Nueva Empresa"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                lineNumber: 109,
+                                lineNumber: 112,
                                 columnNumber: 21
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                        lineNumber: 104,
+                        lineNumber: 107,
                         columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -325,7 +328,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                 children: "Empresa"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                lineNumber: 121,
+                                                lineNumber: 124,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -333,7 +336,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                 children: "Suscripción"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                lineNumber: 122,
+                                                lineNumber: 125,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -341,7 +344,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                 children: "Uso"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                lineNumber: 123,
+                                                lineNumber: 126,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -349,18 +352,18 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                 children: "Acciones Operativas"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                lineNumber: 124,
+                                                lineNumber: 127,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                        lineNumber: 120,
+                                        lineNumber: 123,
                                         columnNumber: 29
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                    lineNumber: 119,
+                                    lineNumber: 122,
                                     columnNumber: 25
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -378,7 +381,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                                 children: company.name[0]
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                                lineNumber: 132,
+                                                                lineNumber: 135,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -388,7 +391,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                                         children: company.name
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                                        lineNumber: 136,
+                                                                        lineNumber: 139,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -399,30 +402,30 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                                                 className: `h-1 w-1 rounded-full ${company.status === __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$prisma$2f$client$2f$index$2d$browser$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CompanyStatus"].ACTIVE ? 'bg-emerald-500' : 'bg-rose-500'}`
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                                                lineNumber: 139,
+                                                                                lineNumber: 142,
                                                                                 columnNumber: 53
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                                        lineNumber: 137,
+                                                                        lineNumber: 140,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                                lineNumber: 135,
+                                                                lineNumber: 138,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                        lineNumber: 131,
+                                                        lineNumber: 134,
                                                         columnNumber: 41
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                    lineNumber: 130,
+                                                    lineNumber: 133,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -435,7 +438,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                                 children: company.plan?.name || 'Manual'
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                                lineNumber: 146,
+                                                                lineNumber: 149,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -447,18 +450,18 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                                 children: "Cambiar Plan"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                                lineNumber: 149,
+                                                                lineNumber: 152,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                        lineNumber: 145,
+                                                        lineNumber: 148,
                                                         columnNumber: 41
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                    lineNumber: 144,
+                                                    lineNumber: 147,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -474,7 +477,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                                         children: "BNC"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                                        lineNumber: 160,
+                                                                        lineNumber: 163,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -482,13 +485,13 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                                         children: company._count.branches
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                                        lineNumber: 161,
+                                                                        lineNumber: 164,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                                lineNumber: 159,
+                                                                lineNumber: 162,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -499,7 +502,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                                         children: "USR"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                                        lineNumber: 164,
+                                                                        lineNumber: 167,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -507,13 +510,13 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                                         children: company._count.users
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                                        lineNumber: 165,
+                                                                        lineNumber: 168,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                                lineNumber: 163,
+                                                                lineNumber: 166,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -524,7 +527,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                                         children: "SLS"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                                        lineNumber: 168,
+                                                                        lineNumber: 171,
                                                                         columnNumber: 49
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -532,24 +535,24 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                                         children: company._count.sales
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                                        lineNumber: 169,
+                                                                        lineNumber: 172,
                                                                         columnNumber: 49
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                                lineNumber: 167,
+                                                                lineNumber: 170,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                        lineNumber: 158,
+                                                        lineNumber: 161,
                                                         columnNumber: 41
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                    lineNumber: 157,
+                                                    lineNumber: 160,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -558,13 +561,17 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                         className: "flex items-center justify-end gap-3 text-lg",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                                onClick: ()=>handleToggleStatus(company.id, company.status),
+                                                                onClick: ()=>setShowToggleModal({
+                                                                        id: company.id,
+                                                                        name: company.name,
+                                                                        status: company.status
+                                                                    }),
                                                                 disabled: loading === company.id,
                                                                 className: `text-[9px] px-3 py-1.5 rounded-lg font-black uppercase tracking-tighter transition-all border ${company.status === __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$prisma$2f$client$2f$index$2d$browser$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CompanyStatus"].ACTIVE ? 'text-rose-500/60 border-rose-500/10 hover:bg-rose-500/10' : 'text-emerald-500/60 border-emerald-500/10 hover:bg-emerald-500/10'}`,
                                                                 children: company.status === __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$prisma$2f$client$2f$index$2d$browser$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CompanyStatus"].ACTIVE ? 'Suspender' : 'Activar'
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                                lineNumber: 175,
+                                                                lineNumber: 178,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -574,7 +581,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                                 children: "🎭"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                                lineNumber: 186,
+                                                                lineNumber: 189,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -584,7 +591,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                                 children: "👁️"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                                lineNumber: 194,
+                                                                lineNumber: 197,
                                                                 columnNumber: 45
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -594,46 +601,46 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                                 children: "🗑️"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                                lineNumber: 202,
+                                                                lineNumber: 205,
                                                                 columnNumber: 45
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                        lineNumber: 174,
+                                                        lineNumber: 177,
                                                         columnNumber: 41
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                    lineNumber: 173,
+                                                    lineNumber: 176,
                                                     columnNumber: 37
                                                 }, this)
                                             ]
                                         }, company.id, true, {
                                             fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                            lineNumber: 129,
+                                            lineNumber: 132,
                                             columnNumber: 33
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                    lineNumber: 127,
+                                    lineNumber: 130,
                                     columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                            lineNumber: 118,
+                            lineNumber: 121,
                             columnNumber: 21
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                        lineNumber: 117,
+                        lineNumber: 120,
                         columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                lineNumber: 103,
+                lineNumber: 106,
                 columnNumber: 13
             }, this),
             showPlanModal && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -644,7 +651,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                         onClick: ()=>setShowPlanModal(null)
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                        lineNumber: 221,
+                        lineNumber: 224,
                         columnNumber: 21
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -655,7 +662,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                 children: "Cambiar Plan"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                lineNumber: 223,
+                                lineNumber: 226,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -673,7 +680,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                     children: plan.name
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                    lineNumber: 234,
+                                                    lineNumber: 237,
                                                     columnNumber: 37
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -684,13 +691,13 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                    lineNumber: 235,
+                                                    lineNumber: 238,
                                                     columnNumber: 37
                                                 }, this)
                                             ]
                                         }, plan.id, true, {
                                             fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                            lineNumber: 226,
+                                            lineNumber: 229,
                                             columnNumber: 33
                                         }, this)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -702,7 +709,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                 children: "Cancelar"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                lineNumber: 239,
+                                                lineNumber: 242,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -711,31 +718,31 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                 children: "Actualizar"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                lineNumber: 240,
+                                                lineNumber: 243,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                        lineNumber: 238,
+                                        lineNumber: 241,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                lineNumber: 224,
+                                lineNumber: 227,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                        lineNumber: 222,
+                        lineNumber: 225,
                         columnNumber: 21
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                lineNumber: 220,
+                lineNumber: 223,
                 columnNumber: 17
             }, this),
             showModal && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -746,7 +753,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                         onClick: ()=>setShowModal(false)
                     }, void 0, false, {
                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                        lineNumber: 250,
+                        lineNumber: 253,
                         columnNumber: 21
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -757,7 +764,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                 children: "Registrar Nueva Empresa"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                lineNumber: 252,
+                                lineNumber: 255,
                                 columnNumber: 25
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -772,7 +779,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                 children: "Nombre de la Empresa"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                lineNumber: 256,
+                                                lineNumber: 259,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -786,13 +793,13 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                 className: "w-full bg-[var(--text-dim)]/5 border border-[var(--border-dim)] rounded-2xl px-5 py-3.5 focus:outline-none focus:border-purple-500/50 transition-all text-[var(--text-main)]"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                lineNumber: 257,
+                                                lineNumber: 260,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                        lineNumber: 255,
+                                        lineNumber: 258,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -803,7 +810,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                 children: "Email de Empresa"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                lineNumber: 267,
+                                                lineNumber: 270,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -818,13 +825,13 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                 className: "w-full bg-[var(--text-dim)]/5 border border-[var(--border-dim)] rounded-2xl px-5 py-3.5 focus:outline-none focus:border-purple-500/50 transition-all text-[var(--text-main)]"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                lineNumber: 268,
+                                                lineNumber: 271,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                        lineNumber: 266,
+                                        lineNumber: 269,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -835,7 +842,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                 children: "Plan de Suscripción"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                lineNumber: 279,
+                                                lineNumber: 282,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -856,18 +863,18 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                         ]
                                                     }, p.id, true, {
                                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                        lineNumber: 286,
+                                                        lineNumber: 289,
                                                         columnNumber: 41
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                lineNumber: 280,
+                                                lineNumber: 283,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                        lineNumber: 278,
+                                        lineNumber: 281,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -877,7 +884,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                 className: "h-px bg-[var(--border-dim)] w-full mb-6"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                lineNumber: 292,
+                                                lineNumber: 295,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -885,13 +892,13 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                 children: "Cuenta de Administrador Inicial"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                lineNumber: 293,
+                                                lineNumber: 296,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                        lineNumber: 291,
+                                        lineNumber: 294,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -902,7 +909,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                 children: "Nombre del Admin"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                lineNumber: 297,
+                                                lineNumber: 300,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -916,13 +923,13 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                 className: "w-full bg-[var(--text-dim)]/5 border border-[var(--border-dim)] rounded-2xl px-5 py-3.5 focus:outline-none focus:border-purple-500/50 transition-all text-[var(--text-main)]"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                lineNumber: 298,
+                                                lineNumber: 301,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                        lineNumber: 296,
+                                        lineNumber: 299,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -933,7 +940,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                 children: "Email del Admin"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                lineNumber: 308,
+                                                lineNumber: 311,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -948,13 +955,13 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                 className: "w-full bg-[var(--text-dim)]/5 border border-[var(--border-dim)] rounded-2xl px-5 py-3.5 focus:outline-none focus:border-purple-500/50 transition-all text-[var(--text-main)]"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                lineNumber: 309,
+                                                lineNumber: 312,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                        lineNumber: 307,
+                                        lineNumber: 310,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -967,7 +974,7 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                 children: "Cancelar"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                lineNumber: 320,
+                                                lineNumber: 323,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -977,41 +984,137 @@ function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }) {
                                                 children: loading === 'creating' ? 'Creando...' : 'Crear Empresa'
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                                lineNumber: 327,
+                                                lineNumber: 330,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                        lineNumber: 319,
+                                        lineNumber: 322,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                                lineNumber: 254,
+                                lineNumber: 257,
                                 columnNumber: 25
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                        lineNumber: 251,
+                        lineNumber: 254,
                         columnNumber: 21
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-                lineNumber: 249,
+                lineNumber: 252,
+                columnNumber: 17
+            }, this),
+            showToggleModal && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "fixed inset-0 z-[70] flex items-center justify-center p-4",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "absolute inset-0 bg-black/80 backdrop-blur-md",
+                        onClick: ()=>setShowToggleModal(null)
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
+                        lineNumber: 345,
+                        columnNumber: 21
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "glass-card w-full max-w-md rounded-[2.5rem] p-10 relative z-10 shadow-3xl animate-in zoom-in-95 fade-in duration-300 text-center",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: `mx-auto h-20 w-20 rounded-full flex items-center justify-center text-4xl mb-6 shadow-xl ${showToggleModal.status === __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$prisma$2f$client$2f$index$2d$browser$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CompanyStatus"].ACTIVE ? 'bg-rose-500/20 text-rose-500 shadow-rose-500/20' : 'bg-emerald-500/20 text-emerald-500 shadow-emerald-500/20'}`,
+                                children: showToggleModal.status === __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$prisma$2f$client$2f$index$2d$browser$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CompanyStatus"].ACTIVE ? '⚠️' : '✅'
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
+                                lineNumber: 347,
+                                columnNumber: 25
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                className: "text-2xl font-black mb-4 text-[var(--text-main)]",
+                                children: showToggleModal.status === __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$prisma$2f$client$2f$index$2d$browser$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CompanyStatus"].ACTIVE ? '¿Suspender Empresa?' : '¿Activar Empresa?'
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
+                                lineNumber: 350,
+                                columnNumber: 25
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "text-[var(--text-dim)] mb-8 text-lg",
+                                children: [
+                                    "¿Estás seguro que deseas ",
+                                    showToggleModal.status === __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$prisma$2f$client$2f$index$2d$browser$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CompanyStatus"].ACTIVE ? 'suspender' : 'activar',
+                                    " el acceso a la empresa ",
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
+                                        fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
+                                        lineNumber: 354,
+                                        columnNumber: 153
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "font-bold text-[var(--text-main)]",
+                                        children: showToggleModal.name
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
+                                        lineNumber: 354,
+                                        columnNumber: 159
+                                    }, this),
+                                    "?"
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
+                                lineNumber: 353,
+                                columnNumber: 25
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex gap-4 pt-4",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                        onClick: ()=>setShowToggleModal(null),
+                                        className: "flex-1 py-3.5 rounded-2xl font-bold bg-[var(--text-dim)]/10 text-[var(--text-dim)] hover:bg-[var(--text-dim)]/20 hover:text-[var(--text-main)] transition-colors",
+                                        children: "Cancelar"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
+                                        lineNumber: 357,
+                                        columnNumber: 29
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                        onClick: confirmToggleStatus,
+                                        disabled: loading === showToggleModal.id,
+                                        className: `flex-1 py-3.5 rounded-2xl font-black transition-all shadow-xl disabled:opacity-50 ${showToggleModal.status === __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$prisma$2f$client$2f$index$2d$browser$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CompanyStatus"].ACTIVE ? 'bg-rose-500 text-white shadow-rose-500/30 hover:bg-rose-600' : 'bg-emerald-500 text-white shadow-emerald-500/30 hover:bg-emerald-600'}`,
+                                        children: loading === showToggleModal.id ? 'Procesando...' : showToggleModal.status === __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$prisma$2f$client$2f$index$2d$browser$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CompanyStatus"].ACTIVE ? 'Sí, Suspender' : 'Sí, Activar'
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
+                                        lineNumber: 363,
+                                        columnNumber: 29
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
+                                lineNumber: 356,
+                                columnNumber: 25
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
+                        lineNumber: 346,
+                        columnNumber: 21
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
+                lineNumber: 344,
                 columnNumber: 17
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/components/SaaSAdminDashboard.tsx",
-        lineNumber: 78,
+        lineNumber: 81,
         columnNumber: 9
     }, this);
 }
-_s(SaaSAdminDashboard, "GZt//KElr8qhZ/FT1BNcV8aUGBE=", false, function() {
+_s(SaaSAdminDashboard, "lpq5f3qOZc3JFQN6kd9AMoHzD14=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"]
     ];
