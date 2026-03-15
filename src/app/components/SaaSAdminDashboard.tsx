@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { CompanyStatus } from '@prisma/client';
-import { toggleCompanyStatus, createCompany, softDeleteCompany, updateCompanyPlan, impersonateCompany } from '@/lib/actions/saas-admin';
+import { toggleCompanyStatus, createCompany, softDeleteCompany, updateCompanyPlan, impersonateCompany, getCompanies, CompanyFilter } from '@/lib/actions/saas-admin';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -15,18 +15,35 @@ interface SaaSAdminDashboardProps {
         newCompaniesThisMonth: number;
         estimatedYearlyRevenue: number;
         totalPlatformUsers: number;
+        companiesPerPlan?: { name: string; count: number }[];
     };
-    companies: any[];
+    initialData: {
+        companies: any[];
+        totalCount: number;
+        page: number;
+        pageSize: number;
+        totalPages: number;
+    };
     plans: any[];
     hideMetrics?: boolean;
 }
 
-export default function SaaSAdminDashboard({ metrics, companies, plans, hideMetrics }: SaaSAdminDashboardProps) {
+export default function SaaSAdminDashboard({ metrics, initialData, plans, hideMetrics }: SaaSAdminDashboardProps) {
     const router = useRouter();
     const [loading, setLoading] = useState<string | null>(null);
+    const [isFetching, setIsFetching] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [showPlanModal, setShowPlanModal] = useState<{ id: string, planId: string } | null>(null);
     const [showToggleModal, setShowToggleModal] = useState<{ id: string, name: string, status: CompanyStatus } | null>(null);
+
+    // Query States
+    const [data, setData] = useState(initialData);
+    const [search, setSearch] = useState('');
+    const [page, setPage] = useState(1);
+    const [filter, setFilter] = useState<CompanyFilter>({});
+    const [sortBy, setSortBy] = useState('createdAt');
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -34,6 +51,56 @@ export default function SaaSAdminDashboard({ metrics, companies, plans, hideMetr
         adminName: '',
         adminEmail: '',
     });
+
+    const refreshData = useCallback(async () => {
+        setIsFetching(true);
+        try {
+            const result = await getCompanies({
+                page,
+                pageSize: 10,
+                search,
+                filter,
+                sortBy,
+                sortOrder
+            });
+            setData(result);
+        } catch (error) {
+            console.error('Error fetching companies:', error);
+        } finally {
+            setIsFetching(false);
+        }
+    }, [page, search, filter, sortBy, sortOrder]);
+
+    useEffect(() => {
+        refreshData();
+    }, [refreshData]);
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearch(e.target.value);
+        setPage(1); // Reset page on search
+    };
+
+    const handleFilterClick = (newFilter: CompanyFilter) => {
+        setFilter(newFilter);
+        setPage(1);
+    };
+
+    const clearFilters = () => {
+        setFilter({});
+        setSearch('');
+        setPage(1);
+        setSortBy('createdAt');
+        setSortOrder('desc');
+    };
+
+    const handleSort = (field: string) => {
+        if (sortBy === field) {
+            setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortBy(field);
+            setSortOrder('asc');
+        }
+    };
 
     const confirmToggleStatus = async () => {
         if (!showToggleModal) return;
@@ -80,17 +147,22 @@ export default function SaaSAdminDashboard({ metrics, companies, plans, hideMetr
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Advanced Metrics Grid */}
+            {/* Advanced Metrics Grid */}
             {!hideMetrics && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {[
-                        { label: 'MRR', value: `$${metrics.mrr.toLocaleString()}`, icon: '📈', color: 'bg-emerald-500', sub: 'Monthly Recurring Revenue' },
-                        { label: 'Revenue Anual Est.', value: `$${metrics.estimatedYearlyRevenue.toLocaleString()}`, icon: '💰', color: 'bg-blue-500', sub: 'Basado en suscripciones' },
-                        { label: 'Empresas Activas', value: metrics.activeCompanies, icon: '✅', color: 'bg-purple-500', sub: `De ${metrics.totalCompanies} totales` },
-                        { label: 'Nuevas (Mes)', value: metrics.newCompaniesThisMonth, icon: '✨', color: 'bg-amber-500', sub: 'Crecimiento mensual' },
-                        { label: 'Usuarios Plataforma', value: metrics.totalPlatformUsers, icon: '👥', color: 'bg-indigo-500', sub: 'Carga actual' },
-                        { label: 'Suspendidas', value: metrics.suspendedCompanies, icon: '⚠️', color: 'bg-rose-500', sub: 'Control de Churn' },
+                        { label: 'MRR', value: `$${metrics.mrr.toLocaleString()}`, icon: '📈', color: 'bg-emerald-500', sub: 'Monthly Recurring Revenue', clickable: false },
+                        { label: 'Revenue Anual Est.', value: `$${metrics.estimatedYearlyRevenue.toLocaleString()}`, icon: '💰', color: 'bg-blue-500', sub: 'Basado en suscripciones', clickable: false },
+                        { label: 'Empresas Activas', value: metrics.activeCompanies, icon: '✅', color: 'bg-purple-500', sub: `De ${metrics.totalCompanies} totales`, filter: { status: CompanyStatus.ACTIVE } },
+                        { label: 'Nuevas (Mes)', value: metrics.newCompaniesThisMonth, icon: '✨', color: 'bg-amber-500', sub: 'Crecimiento mensual', filter: { createdMonth: true } },
+                        { label: 'Usuarios Plataforma', value: metrics.totalPlatformUsers, icon: '👥', color: 'bg-indigo-500', sub: 'Carga actual', clickable: false },
+                        { label: 'Suspendidas', value: metrics.suspendedCompanies, icon: '⚠️', color: 'bg-rose-500', sub: 'Control de Churn', filter: { status: CompanyStatus.SUSPENDED } },
                     ].map((m) => (
-                        <div key={m.label} className="glass-card rounded-2xl p-6 transition-all duration-300 hover:border-[var(--text-dim)]/20 group">
+                        <div
+                            key={m.label}
+                            onClick={() => m.filter && handleFilterClick(m.filter)}
+                            className={`glass-card rounded-2xl p-6 transition-all duration-300 hover:border-[var(--text-dim)]/20 group ${m.filter ? 'cursor-pointer hover:bg-[var(--text-dim)]/5' : ''}`}
+                        >
                             <div className={`h-10 w-10 rounded-xl ${m.color}/20 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform`}>
                                 {m.icon}
                             </div>
@@ -99,36 +171,111 @@ export default function SaaSAdminDashboard({ metrics, companies, plans, hideMetr
                             <p className="text-[var(--text-dim)]/50 text-[9px] mt-1 font-medium">{m.sub}</p>
                         </div>
                     ))}
+
+                    {/* Dynamic Companies Per Plan Cards */}
+                    {metrics.companiesPerPlan?.map((plan) => {
+                        const planObj = plans.find(p => p.name === plan.name);
+                        return (
+                            <div
+                                key={plan.name}
+                                onClick={() => planObj && handleFilterClick({ planId: planObj.id })}
+                                className="glass-card rounded-2xl p-6 transition-all duration-300 hover:border-[var(--text-dim)]/20 group cursor-pointer hover:bg-[var(--text-dim)]/5"
+                            >
+                                <div className="h-10 w-10 rounded-xl bg-cyan-500/20 flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                                    🏢
+                                </div>
+                                <p className="text-[var(--text-dim)] text-[10px] font-black uppercase tracking-wider mb-1">Plan {plan.name}</p>
+                                <h3 className="text-2xl font-black text-[var(--text-main)]">{plan.count}</h3>
+                                <p className="text-[var(--text-dim)]/50 text-[9px] mt-1 font-medium">Empresas activas en este plan</p>
+                            </div>
+                        );
+                    })}
+                </div>
+            )}
+
+            {/* Filter Status Badge */}
+            {(Object.keys(filter).length > 0 || search) && (
+                <div className="flex items-center justify-between bg-purple-600/10 border border-purple-500/20 px-6 py-3 rounded-2xl animate-in slide-in-from-left-4 duration-500">
+                    <div className="flex items-center gap-2">
+                        <span className="text-[var(--text-dim)] text-xs font-black uppercase tracking-widest">Filtrando por:</span>
+                        <div className="flex flex-wrap gap-2">
+                            {filter.status && (
+                                <span className="bg-purple-600 text-white text-[9px] px-2 py-1 rounded-full font-black uppercase tracking-tighter">
+                                    Estado: {filter.status}
+                                </span>
+                            )}
+                            {filter.planId && (
+                                <span className="bg-purple-600 text-white text-[9px] px-2 py-1 rounded-full font-black uppercase tracking-tighter">
+                                    Plan: {plans.find(p => p.id === filter.planId)?.name}
+                                </span>
+                            )}
+                            {filter.createdMonth && (
+                                <span className="bg-purple-600 text-white text-[9px] px-2 py-1 rounded-full font-black uppercase tracking-tighter">
+                                    Creados este mes
+                                </span>
+                            )}
+                            {search && (
+                                <span className="bg-[var(--text-main)] text-[var(--background)] text-[9px] px-2 py-1 rounded-full font-black uppercase tracking-tighter">
+                                    Búsqueda: {search}
+                                </span>
+                            )}
+                        </div>
+                    </div>
+                    <button
+                        onClick={clearFilters}
+                        className="text-[var(--text-dim)] hover:text-rose-500 text-[10px] font-black uppercase tracking-widest transition-colors flex items-center gap-1"
+                    >
+                        ✕ Limpiar Filtros
+                    </button>
                 </div>
             )}
 
             {/* Companies List */}
-            <div className="glass-card rounded-3xl overflow-hidden shadow-2xl shadow-black/20">
-                <div className="px-8 py-6 border-b border-[var(--border-dim)] flex items-center justify-between">
+            <div className={`glass-card rounded-3xl overflow-hidden shadow-2xl shadow-black/20 ${isFetching ? 'opacity-50 pointer-events-none' : ''} transition-opacity duration-300`}>
+                <div className="px-8 py-6 border-b border-[var(--border-dim)] flex flex-col md:flex-row items-center justify-between gap-4">
                     <div>
                         <h2 className="text-xl font-bold text-[var(--text-main)]">Gestión de Clientes SaaS</h2>
-                        <p className="text-[var(--text-dim)] text-sm mt-1">Refactored: Acceso total a operaciones de inquilinos</p>
+                        <p className="text-[var(--text-dim)] text-[10px] uppercase font-black tracking-widest mt-1">
+                            {data.totalCount} Resultados Encontrados
+                        </p>
                     </div>
-                    <button
-                        onClick={() => setShowModal(true)}
-                        className="bg-purple-600 hover:bg-purple-500 text-white px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 shadow-lg shadow-purple-600/20 active:scale-95 flex items-center gap-2"
-                    >
-                        <span>+</span> Nueva Empresa
-                    </button>
+                    <div className="flex items-center gap-4 w-full md:w-auto">
+                        <div className="relative flex-1 md:w-64">
+                            <input
+                                type="text"
+                                placeholder="Buscar empresa o email..."
+                                value={search}
+                                onChange={handleSearch}
+                                className="w-full bg-[var(--text-dim)]/5 border border-[var(--border-dim)] rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-purple-500 transition-all"
+                            />
+                            {isFetching && <div className="absolute right-3 top-2.5 h-3 w-3 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />}
+                        </div>
+                        <button
+                            onClick={() => setShowModal(true)}
+                            className="bg-purple-600 hover:bg-purple-500 text-white px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 shadow-lg shadow-purple-600/20 active:scale-95 flex items-center gap-2 whitespace-nowrap"
+                        >
+                            <span>+</span> Nueva Empresa
+                        </button>
+                    </div>
                 </div>
 
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="bg-[var(--text-dim)]/[0.02] text-[var(--text-dim)] text-[10px] uppercase tracking-[0.15em] font-bold">
-                                <th className="px-8 py-4 border-b border-[var(--border-dim)] font-black">Empresa</th>
+                                <th className="px-8 py-4 border-b border-[var(--border-dim)] font-black cursor-pointer hover:text-[var(--text-main)] transition-colors" onClick={() => handleSort('name')}>
+                                    Empresa {sortBy === 'name' && (sortOrder === 'asc' ? '▲' : '▼')}
+                                </th>
                                 <th className="px-8 py-4 border-b border-[var(--border-dim)] font-black">Suscripción</th>
                                 <th className="px-8 py-4 border-b border-[var(--border-dim)] font-black">Uso</th>
-                                <th className="px-8 py-4 border-b border-[var(--border-dim)] text-right font-black">Acciones Operativas</th>
+                                <th className="px-8 py-4 border-b border-[var(--border-dim)] text-right font-black cursor-pointer hover:text-[var(--text-main)] transition-colors" onClick={() => handleSort('createdAt')}>
+                                    Fecha {sortBy === 'createdAt' && (sortOrder === 'asc' ? '▲' : '▼')}
+                                </th>
+                                <th className="px-8 py-4 border-b border-[var(--border-dim)] text-right font-black">Acciones</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-[var(--border-dim)]">
-                            {companies.map((company) => (
+                            {data.companies.map((company) => (
                                 <tr key={company.id} className="hover:bg-[var(--text-dim)]/[0.02] transition-colors group">
                                     <td className="px-8 py-5">
                                         <div className="flex items-center gap-4">
@@ -173,6 +320,9 @@ export default function SaaSAdminDashboard({ metrics, companies, plans, hideMetr
                                             </div>
                                         </div>
                                     </td>
+                                    <td className="px-8 py-5 text-right font-mono text-[10px] text-[var(--text-dim)]">
+                                        {new Date(company.createdAt).toLocaleDateString()}
+                                    </td>
                                     <td className="px-8 py-5 text-right">
                                         <div className="flex items-center justify-end gap-3 text-lg">
                                             <button
@@ -215,6 +365,29 @@ export default function SaaSAdminDashboard({ metrics, companies, plans, hideMetr
                             ))}
                         </tbody>
                     </table>
+                </div>
+
+                {/* Pagination Controls */}
+                <div className="px-8 py-4 border-t border-[var(--border-dim)] flex items-center justify-between">
+                    <span className="text-[10px] text-[var(--text-dim)] font-black uppercase tracking-widest">
+                        Página {data.page} de {data.totalPages}
+                    </span>
+                    <div className="flex gap-2">
+                        <button
+                            disabled={data.page === 1 || isFetching}
+                            onClick={() => setPage(p => Math.max(1, p - 1))}
+                            className="px-4 py-2 rounded-xl bg-[var(--text-dim)]/5 border border-[var(--border-dim)] text-xs font-bold hover:bg-[var(--text-dim)]/10 disabled:opacity-30 transition-all"
+                        >
+                            Anterior
+                        </button>
+                        <button
+                            disabled={data.page >= data.totalPages || isFetching}
+                            onClick={() => setPage(p => p + 1)}
+                            className="px-4 py-2 rounded-xl bg-purple-600 text-white text-xs font-bold hover:bg-purple-500 disabled:opacity-30 transition-all"
+                        >
+                            Siguiente
+                        </button>
+                    </div>
                 </div>
             </div>
 

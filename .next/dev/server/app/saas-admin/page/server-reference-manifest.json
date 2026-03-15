@@ -15,6 +15,21 @@
       "exportedName": "logout",
       "filename": "src/lib/actions/auth.ts"
     },
+    "008a4297fe3cab3835777afa389a6edcdb4635d397": {
+      "workers": {
+        "app/saas-admin/page": {
+          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/user.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "requireSaaSAdmin",
+          "filename": "src/lib/actions/auth.ts"
+        }
+      },
+      "layer": {
+        "app/saas-admin/page": "rsc"
+      },
+      "exportedName": "requireSaaSAdmin",
+      "filename": "src/lib/actions/auth.ts"
+    },
     "404c7d125b32a952ebad29a6c426dbacd9559ab7a6": {
       "workers": {
         "app/saas-admin/page": {
@@ -45,21 +60,6 @@
       "exportedName": "updateUserTheme",
       "filename": "src/lib/actions/user.ts"
     },
-    "00199757f04c30222a1991c0273d261d778ccd9fc2": {
-      "workers": {
-        "app/saas-admin/page": {
-          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/user.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
-          "async": false,
-          "exportedName": "getCompanies",
-          "filename": "src/lib/actions/saas-admin.ts"
-        }
-      },
-      "layer": {
-        "app/saas-admin/page": "rsc"
-      },
-      "exportedName": "getCompanies",
-      "filename": "src/lib/actions/saas-admin.ts"
-    },
     "0070e7985facf4adaf5e0117d5aa331828c89a13a9": {
       "workers": {
         "app/saas-admin/page": {
@@ -88,6 +88,21 @@
         "app/saas-admin/page": "rsc"
       },
       "exportedName": "getSaaSMetrics",
+      "filename": "src/lib/actions/saas-admin.ts"
+    },
+    "40199757f04c30222a1991c0273d261d778ccd9fc2": {
+      "workers": {
+        "app/saas-admin/page": {
+          "moduleId": "[project]/.next-internal/server/app/saas-admin/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/user.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "getCompanies",
+          "filename": "src/lib/actions/saas-admin.ts"
+        }
+      },
+      "layer": {
+        "app/saas-admin/page": "action-browser"
+      },
+      "exportedName": "getCompanies",
       "filename": "src/lib/actions/saas-admin.ts"
     },
     "407d569dda344fbf211fda2e5f07a0d724801c05d1": {

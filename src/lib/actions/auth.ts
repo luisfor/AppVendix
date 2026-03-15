@@ -1,7 +1,7 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { encrypt } from '@/lib/auth-utils';
+import { encrypt, getSession } from '@/lib/auth-utils';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import bcrypt from 'bcryptjs';
@@ -64,4 +64,12 @@ export async function login(formData: FormData) {
 export async function logout() {
     (await cookies()).set('session', '', { expires: new Date(0) });
     redirect('/auth/login');
+}
+
+export async function requireSaaSAdmin() {
+    const session = await getSession();
+    if (!session || session.role !== 'SAAS_SUPER_ADMIN') {
+        redirect('/auth/login');
+    }
+    return session;
 }

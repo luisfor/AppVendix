@@ -33,7 +33,7 @@ export default async function SaaSAdminPage() {
                     </p>
                 </header>
 
-                <SaaSAdminDashboard metrics={metrics} companies={companies} plans={plans} hideMetrics={false} />
+                <SaaSAdminDashboard metrics={metrics} initialData={companies} plans={plans} hideMetrics={false} />
             </div>
         </div>
     );

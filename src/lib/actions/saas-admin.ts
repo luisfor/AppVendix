@@ -28,7 +28,20 @@ export async function getSaaSMetrics() {
         }),
     ]);
 
-    const mrr = activePlans.reduce((acc, company) => acc + Number(company.plan?.price || 0), 0);
+    const mrr = activePlans.reduce((acc, company) => acc + Number(company.plan?.monthlyPrice || 0), 0);
+
+    const companiesPerPlanMap = activePlans.reduce((acc: any, company) => {
+        if (!company.plan) return acc; // Skip companies without a plan assigned
+        const planName = company.plan.name;
+        if (!acc[planName]) acc[planName] = 0;
+        acc[planName]++;
+        return acc;
+    }, {});
+
+    const companiesPerPlan = Object.entries(companiesPerPlanMap).map(([name, count]) => ({
+        name,
+        count
+    }));
 
     return {
         totalCompanies,
@@ -38,24 +51,84 @@ export async function getSaaSMetrics() {
         newCompaniesThisMonth,
         estimatedYearlyRevenue: mrr * 12,
         totalPlatformUsers,
+        companiesPerPlan,
     };
 }
 
-export async function getCompanies() {
-    return await prisma.company.findMany({
-        where: {},
-        include: {
-            plan: true,
-            _count: {
-                select: {
-                    branches: true,
-                    users: true,
-                    sales: true,
+export type CompanyFilter = {
+    status?: CompanyStatus;
+    planId?: string;
+    createdMonth?: boolean;
+};
+
+export async function getCompanies(params: {
+    page?: number;
+    pageSize?: number;
+    search?: string;
+    filter?: CompanyFilter;
+    sortBy?: string;
+    sortOrder?: 'asc' | 'desc';
+} = {}) {
+    const {
+        page = 1,
+        pageSize = 10,
+        search,
+        filter,
+        sortBy = 'createdAt',
+        sortOrder = 'desc'
+    } = params;
+
+    const skip = (page - 1) * pageSize;
+    const where: any = {};
+
+    if (search) {
+        where.OR = [
+            { name: { contains: search, mode: 'insensitive' } },
+            { email: { contains: search, mode: 'insensitive' } },
+        ];
+    }
+
+    if (filter) {
+        if (filter.status) where.status = filter.status;
+        if (filter.planId) where.planId = filter.planId;
+        if (filter.createdMonth) {
+            const now = new Date();
+            const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+            where.createdAt = { gte: firstDay };
+        }
+    }
+
+    // Ensure sortBy is a valid field for Company model or handle it
+    const allowedSortFields = ['name', 'email', 'createdAt', 'status'];
+    const validSortBy = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
+
+    const [companies, totalCount] = await Promise.all([
+        prisma.company.findMany({
+            where,
+            include: {
+                plan: true,
+                _count: {
+                    select: {
+                        branches: true,
+                        users: true,
+                        sales: true,
+                    },
                 },
             },
-        },
-        orderBy: { createdAt: 'desc' },
-    });
+            orderBy: { [validSortBy]: sortOrder },
+            skip,
+            take: pageSize,
+        }),
+        prisma.company.count({ where }),
+    ]);
+
+    return {
+        companies,
+        totalCount,
+        page,
+        pageSize,
+        totalPages: Math.ceil(totalCount / pageSize),
+    };
 }
 
 export async function toggleCompanyStatus(companyId: string, currentStatus: CompanyStatus) {

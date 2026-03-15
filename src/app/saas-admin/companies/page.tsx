@@ -28,7 +28,7 @@ export default async function CompaniesPage() {
             </header>
 
             {/* We reuse the component but it will only show the table if we modify it to be conditional or just ignore metrics */}
-            <SaaSAdminDashboard metrics={dummyMetrics} companies={companies} plans={plans} hideMetrics={true} />
+            <SaaSAdminDashboard metrics={dummyMetrics} initialData={companies} plans={plans} hideMetrics={true} />
         </div>
     );
 }

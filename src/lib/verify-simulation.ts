@@ -1,4 +1,4 @@
-import prisma from './prisma.ts';
+import prisma from './prisma';
 
 async function verify() {
     const salesCount = await prisma.sale.count();

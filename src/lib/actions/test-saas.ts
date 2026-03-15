@@ -1,5 +1,5 @@
-import { SaaSManagementService } from './saas-management.ts';
-import prisma from '../prisma.ts';
+import { SaaSManagementService } from './saas-management';
+import prisma from '../prisma';
 import { CompanyStatus } from '@prisma/client';
 
 export async function testSaaSFlow() {

@@ -13,10 +13,44 @@ enum CompanyStatus {
   TRIAL
 }
 
+enum PlanStatus {
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
+
 enum SystemRole {
   SAAS_SUPER_ADMIN
   COMPANY_ADMIN
   COMPANY_USER
+}
+
+enum SubscriptionState {
+  ACTIVE
+  PENDING_DOWNGRADE
+  OVER_LIMIT
+  GRACE_PERIOD
+}
+
+enum InvoiceStatus {
+  PENDING
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum PaymentStatus {
+  SUCCESS
+  PENDING
+  FAILED
+}
+
+enum BillingEventType {
+  UPGRADE
+  DOWNGRADE
+  SUSPENSION
+  REACTIVATION
+  RENEWAL
 }
 
 model Company {
@@ -42,20 +76,83 @@ model Company {
   categories      Category[]
   customers       Customer[]
   sales           Sale[]
+
+  // Billing & Stripe Integration
+  stripeCustomerId     String?   @unique
+  stripeSubscriptionId String?   @unique
+  subscriptionEndsAt   DateTime?
+  trialEndsAt          DateTime?
+  cancelAtPeriodEnd    Boolean   @default(false)
   
+  subscriptionPayments SubscriptionPayment[]
+  usage           CompanyUsage?
+
+  // Upgrade & Downgrade State
+  subscriptionState SubscriptionState @default(ACTIVE)
+  scheduledPlanId   String?
+
+  invoices        Invoice[]
+  billingEvents   BillingEvent[]
+
   deletedAt       DateTime?
 }
 
 model SubscriptionPlan {
-  id          String   @id @default(cuid())
-  name        String   @unique
-  description String?
-  price       Decimal  @db.Decimal(12, 2)
-  duration    Int      // in days
-  companies   Company[]
-  modules     SystemModule[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String   @id @default(cuid())
+  code            String?  @unique // Identifies versions of the same plan
+  name            String   @unique
+  description     String?
+  monthlyPrice    Decimal  @db.Decimal(12, 2)
+  yearlyPrice     Decimal  @db.Decimal(12, 2)
+  duration        Int      // in days (legacy, keeping for compatibility if needed or semantics)
+  status          PlanStatus @default(ACTIVE)
+  
+  // Limits (-1 means unlimited)
+  maxUsers             Int      @default(-1)
+  maxBranches          Int      @default(-1)
+  maxProducts          Int      @default(-1)
+  maxEmailsPerMonth    Int      @default(500)
+  maxVentasMensuales   Int      @default(-1)
+  maxDataRetentionDays Int      @default(365)
+  maxStorageMb         Int      @default(1024)
+  
+  // Features
+  isTrialEligible Boolean  @default(true)
+  allowCourtesy   Boolean  @default(false)
+  
+  // Versioning
+  version         Int      @default(1)
+
+  companies       Company[]
+  modules         SystemModule[]
+  priceHistory    PlanPriceHistory[]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model CompanyUsage {
+  id                String   @id @default(cuid())
+  companyId         String   @unique
+  company           Company  @relation(fields: [companyId], references: [id])
+  emailsSent        Int      @default(0)
+  salesCount        Int      @default(0)
+  storageUsedMb     Int      @default(0)
+  currentCycleStart DateTime @default(now())
+  currentCycleEnd   DateTime 
+  
+  updatedAt         DateTime @updatedAt
+}
+
+model PlanPriceHistory {
+  id             String   @id @default(cuid())
+  planId         String
+  plan           SubscriptionPlan @relation(fields: [planId], references: [id])
+  monthlyPrice   Decimal  @db.Decimal(12, 2)
+  yearlyPrice    Decimal  @db.Decimal(12, 2)
+  effectiveDate  DateTime @default(now())
+  
+  createdAt      DateTime @default(now())
 }
 
 model SystemModule {
@@ -221,4 +318,62 @@ model SaleItem {
   quantity    Decimal  @db.Decimal(12, 3)
   unitPrice   Decimal  @db.Decimal(12, 2)
   totalPrice  Decimal  @db.Decimal(12, 2)
+}
+
+// -----------------------------------------------------------------------------
+// Billing & Invoices
+// -----------------------------------------------------------------------------
+
+model SubscriptionPayment {
+  id              String   @id @default(cuid())
+  companyId       String
+  stripeInvoiceId String?  @unique
+  amount          Decimal  @db.Decimal(12, 2)
+  currency        String   @default("USD")
+  status          String   // e.g., 'paid', 'open', 'void', 'uncollectible'
+  billingReason   String?  // e.g., 'subscription_create', 'subscription_cycle'
+  createdAt       DateTime @default(now())
+
+  company         Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}
+
+model Invoice {
+  id                  String        @id @default(cuid())
+  companyId           String
+  company             Company       @relation(fields: [companyId], references: [id])
+  subscriptionId      String?       // Matches stripeSubscriptionId
+  planId              String
+  amount              Decimal       @db.Decimal(12, 2)
+  currency            String        @default("USD")
+  status              InvoiceStatus @default(PENDING)
+  issueDate           DateTime      @default(now())
+  dueDate             DateTime
+  paidDate            DateTime?
+  billingPeriodStart  DateTime
+  billingPeriodEnd    DateTime
+  
+  payments            Payment[]
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+}
+
+model Payment {
+  id                   String        @id @default(cuid())
+  invoiceId            String
+  invoice              Invoice       @relation(fields: [invoiceId], references: [id])
+  companyId            String
+  amount               Decimal       @db.Decimal(12, 2)
+  paymentMethod        String        // e.g., 'STRIPE', 'MANUAL', 'BANK_TRANSFER'
+  transactionReference String?       // Stripe Charge ID or Manual Ref
+  status               PaymentStatus @default(SUCCESS)
+  createdAt            DateTime      @default(now())
+}
+
+model BillingEvent {
+  id          String           @id @default(cuid())
+  companyId   String
+  company     Company          @relation(fields: [companyId], references: [id])
+  eventType   BillingEventType
+  description String?
+  createdAt   DateTime         @default(now())
 }

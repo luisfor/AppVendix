@@ -1,0 +1,65 @@
+{
+  "node": {
+    "405bca515c6ed355228d1331ce0a2a358374d416b6": {
+      "workers": {
+        "app/saas-admin/admins/page": {
+          "moduleId": 71111,
+          "async": false,
+          "exportedName": "updateUserTheme",
+          "filename": "src/lib/actions/user.ts"
+        }
+      },
+      "layer": {
+        "app/saas-admin/admins/page": "action-browser"
+      },
+      "exportedName": "updateUserTheme",
+      "filename": "src/lib/actions/user.ts"
+    },
+    "007abb3fdad19aff51647076055512b5a8281feb13": {
+      "workers": {
+        "app/saas-admin/admins/page": {
+          "moduleId": 71111,
+          "async": false,
+          "exportedName": "requireSaaSAdmin",
+          "filename": "src/lib/actions/auth.ts"
+        }
+      },
+      "layer": {
+        "app/saas-admin/admins/page": "rsc"
+      },
+      "exportedName": "requireSaaSAdmin",
+      "filename": "src/lib/actions/auth.ts"
+    },
+    "00a6f7e8d24390e0c55a5706aa931427e6466f5a5a": {
+      "workers": {
+        "app/saas-admin/admins/page": {
+          "moduleId": 71111,
+          "async": false,
+          "exportedName": "logout",
+          "filename": "src/lib/actions/auth.ts"
+        }
+      },
+      "layer": {
+        "app/saas-admin/admins/page": "rsc"
+      },
+      "exportedName": "logout",
+      "filename": "src/lib/actions/auth.ts"
+    },
+    "401bffe80a69619c051026567583e5af5a0e682d07": {
+      "workers": {
+        "app/saas-admin/admins/page": {
+          "moduleId": 71111,
+          "async": false,
+          "exportedName": "login",
+          "filename": "src/lib/actions/auth.ts"
+        }
+      },
+      "layer": {
+        "app/saas-admin/admins/page": "rsc"
+      },
+      "exportedName": "login",
+      "filename": "src/lib/actions/auth.ts"
+    }
+  },
+  "edge": {}
+}

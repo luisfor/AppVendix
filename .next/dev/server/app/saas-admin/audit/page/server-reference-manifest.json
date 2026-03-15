@@ -15,6 +15,21 @@
       "exportedName": "logout",
       "filename": "src/lib/actions/auth.ts"
     },
+    "008a4297fe3cab3835777afa389a6edcdb4635d397": {
+      "workers": {
+        "app/saas-admin/audit/page": {
+          "moduleId": "[project]/.next-internal/server/app/saas-admin/audit/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/user.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "requireSaaSAdmin",
+          "filename": "src/lib/actions/auth.ts"
+        }
+      },
+      "layer": {
+        "app/saas-admin/audit/page": "rsc"
+      },
+      "exportedName": "requireSaaSAdmin",
+      "filename": "src/lib/actions/auth.ts"
+    },
     "404c7d125b32a952ebad29a6c426dbacd9559ab7a6": {
       "workers": {
         "app/saas-admin/audit/page": {

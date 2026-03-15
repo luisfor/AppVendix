@@ -1,3 +1,5 @@
+import BillingPrompt from './components/billing/BillingPrompt';
+
 export default function Home() {
     const stats = [
         { title: 'Dinero en Caja', value: 'S/ 0.00', sub: 'PEN EN CAJA', color: 'bg-blue-500/10 border-blue-500/20 text-blue-400', icon: '💵' },
@@ -8,6 +10,8 @@ export default function Home() {
 
     return (
         <div className="space-y-12">
+            <BillingPrompt />
+
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {stats.map((stat) => (

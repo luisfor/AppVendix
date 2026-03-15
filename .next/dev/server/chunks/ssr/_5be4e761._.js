@@ -63,7 +63,7 @@ async function updateUserTheme(theme) {
 "[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
-/* __next_internal_action_entry_do_not_use__ [{"00199757f04c30222a1991c0273d261d778ccd9fc2":"getCompanies","0070e7985facf4adaf5e0117d5aa331828c89a13a9":"getPlans","00e4e8ae57091ce80d7b9fd4b93a15d3ea08c960f8":"getSaaSMetrics","407d569dda344fbf211fda2e5f07a0d724801c05d1":"createCompany","4095762965af2315914bfb161cc72fef6aed3fbfa7":"getCompanyDetails","40cf5e70fd9b40b1b8f2b3f4d42ad3ed222bb62682":"softDeleteCompany","40dd38db36b3c2080245c571ec50faed862d8a0364":"impersonateCompany","6036b3705bf2298f922a6af566f9e15f5fc7f1bf76":"updateCompanyPlan","60b6d6d0c7301d1953b47df214225075dbeb920348":"toggleCompanyStatus"},"",""] */ __turbopack_context__.s([
+/* __next_internal_action_entry_do_not_use__ [{"0070e7985facf4adaf5e0117d5aa331828c89a13a9":"getPlans","00e4e8ae57091ce80d7b9fd4b93a15d3ea08c960f8":"getSaaSMetrics","40199757f04c30222a1991c0273d261d778ccd9fc2":"getCompanies","407d569dda344fbf211fda2e5f07a0d724801c05d1":"createCompany","4095762965af2315914bfb161cc72fef6aed3fbfa7":"getCompanyDetails","40cf5e70fd9b40b1b8f2b3f4d42ad3ed222bb62682":"softDeleteCompany","40dd38db36b3c2080245c571ec50faed862d8a0364":"impersonateCompany","6036b3705bf2298f922a6af566f9e15f5fc7f1bf76":"updateCompanyPlan","60b6d6d0c7301d1953b47df214225075dbeb920348":"toggleCompanyStatus"},"",""] */ __turbopack_context__.s([
     "createCompany",
     ()=>createCompany,
     "getCompanies",
@@ -126,7 +126,18 @@ async function getSaaSMetrics() {
             }
         })
     ]);
-    const mrr = activePlans.reduce((acc, company)=>acc + Number(company.plan?.price || 0), 0);
+    const mrr = activePlans.reduce((acc, company)=>acc + Number(company.plan?.monthlyPrice || 0), 0);
+    const companiesPerPlanMap = activePlans.reduce((acc, company)=>{
+        if (!company.plan) return acc; // Skip companies without a plan assigned
+        const planName = company.plan.name;
+        if (!acc[planName]) acc[planName] = 0;
+        acc[planName]++;
+        return acc;
+    }, {});
+    const companiesPerPlan = Object.entries(companiesPerPlanMap).map(([name, count])=>({
+            name,
+            count
+        }));
     return {
         totalCompanies,
         activeCompanies,
@@ -134,26 +145,79 @@ async function getSaaSMetrics() {
         mrr,
         newCompaniesThisMonth,
         estimatedYearlyRevenue: mrr * 12,
-        totalPlatformUsers
+        totalPlatformUsers,
+        companiesPerPlan
     };
 }
-async function getCompanies() {
-    return await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].company.findMany({
-        where: {},
-        include: {
-            plan: true,
-            _count: {
-                select: {
-                    branches: true,
-                    users: true,
-                    sales: true
+async function getCompanies(params = {}) {
+    const { page = 1, pageSize = 10, search, filter, sortBy = 'createdAt', sortOrder = 'desc' } = params;
+    const skip = (page - 1) * pageSize;
+    const where = {};
+    if (search) {
+        where.OR = [
+            {
+                name: {
+                    contains: search,
+                    mode: 'insensitive'
+                }
+            },
+            {
+                email: {
+                    contains: search,
+                    mode: 'insensitive'
                 }
             }
-        },
-        orderBy: {
-            createdAt: 'desc'
+        ];
+    }
+    if (filter) {
+        if (filter.status) where.status = filter.status;
+        if (filter.planId) where.planId = filter.planId;
+        if (filter.createdMonth) {
+            const now = new Date();
+            const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+            where.createdAt = {
+                gte: firstDay
+            };
         }
-    });
+    }
+    // Ensure sortBy is a valid field for Company model or handle it
+    const allowedSortFields = [
+        'name',
+        'email',
+        'createdAt',
+        'status'
+    ];
+    const validSortBy = allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
+    const [companies, totalCount] = await Promise.all([
+        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].company.findMany({
+            where,
+            include: {
+                plan: true,
+                _count: {
+                    select: {
+                        branches: true,
+                        users: true,
+                        sales: true
+                    }
+                }
+            },
+            orderBy: {
+                [validSortBy]: sortOrder
+            },
+            skip,
+            take: pageSize
+        }),
+        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$prisma$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].company.count({
+            where
+        })
+    ]);
+    return {
+        companies,
+        totalCount,
+        page,
+        pageSize,
+        totalPages: Math.ceil(totalCount / pageSize)
+    };
 }
 async function toggleCompanyStatus(companyId, currentStatus) {
     const newStatus = currentStatus === __TURBOPACK__imported__module__$5b$externals$5d2f40$prisma$2f$client__$5b$external$5d$__$2840$prisma$2f$client$2c$__cjs$2c$__$5b$project$5d2f$node_modules$2f40$prisma$2f$client$29$__["CompanyStatus"].ACTIVE ? __TURBOPACK__imported__module__$5b$externals$5d2f40$prisma$2f$client__$5b$external$5d$__$2840$prisma$2f$client$2c$__cjs$2c$__$5b$project$5d2f$node_modules$2f40$prisma$2f$client$29$__["CompanyStatus"].SUSPENDED : __TURBOPACK__imported__module__$5b$externals$5d2f40$prisma$2f$client__$5b$external$5d$__$2840$prisma$2f$client$2c$__cjs$2c$__$5b$project$5d2f$node_modules$2f40$prisma$2f$client$29$__["CompanyStatus"].ACTIVE;
@@ -283,7 +347,7 @@ async function getPlans() {
     getPlans
 ]);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getSaaSMetrics, "00e4e8ae57091ce80d7b9fd4b93a15d3ea08c960f8", null);
-(0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getCompanies, "00199757f04c30222a1991c0273d261d778ccd9fc2", null);
+(0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(getCompanies, "40199757f04c30222a1991c0273d261d778ccd9fc2", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(toggleCompanyStatus, "60b6d6d0c7301d1953b47df214225075dbeb920348", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(updateCompanyPlan, "6036b3705bf2298f922a6af566f9e15f5fc7f1bf76", null);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(softDeleteCompany, "40cf5e70fd9b40b1b8f2b3f4d42ad3ed222bb62682", null);
@@ -316,19 +380,23 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$actions$2f$saa
 ;
 ;
 ;
+;
+;
 }),
 "[project]/.next-internal/server/app/saas-admin/companies/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/lib/actions/auth.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/lib/actions/user.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE2 => \"[project]/src/lib/actions/saas-admin.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
 __turbopack_context__.s([
-    "00199757f04c30222a1991c0273d261d778ccd9fc2",
-    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$actions$2f$saas$2d$admin$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getCompanies"],
     "0058438bc3e7de797a5999b235c5f8840c376fe0d5",
     ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$actions$2f$auth$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["logout"],
     "0070e7985facf4adaf5e0117d5aa331828c89a13a9",
     ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$actions$2f$saas$2d$admin$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getPlans"],
+    "008a4297fe3cab3835777afa389a6edcdb4635d397",
+    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$actions$2f$auth$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["requireSaaSAdmin"],
     "00e4e8ae57091ce80d7b9fd4b93a15d3ea08c960f8",
     ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$actions$2f$saas$2d$admin$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getSaaSMetrics"],
+    "40199757f04c30222a1991c0273d261d778ccd9fc2",
+    ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$actions$2f$saas$2d$admin$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getCompanies"],
     "404c7d125b32a952ebad29a6c426dbacd9559ab7a6",
     ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$actions$2f$auth$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["login"],
     "407d569dda344fbf211fda2e5f07a0d724801c05d1",

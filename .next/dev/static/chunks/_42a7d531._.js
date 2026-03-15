@@ -2321,12 +2321,29 @@ exports.Prisma.CompanyScalarFieldEnum = {
 };
 exports.Prisma.SubscriptionPlanScalarFieldEnum = {
     id: 'id',
+    code: 'code',
     name: 'name',
     description: 'description',
-    price: 'price',
+    monthlyPrice: 'monthlyPrice',
+    yearlyPrice: 'yearlyPrice',
     duration: 'duration',
+    status: 'status',
+    maxUsers: 'maxUsers',
+    maxBranches: 'maxBranches',
+    maxProducts: 'maxProducts',
+    isTrialEligible: 'isTrialEligible',
+    allowCourtesy: 'allowCourtesy',
+    version: 'version',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
+};
+exports.Prisma.PlanPriceHistoryScalarFieldEnum = {
+    id: 'id',
+    planId: 'planId',
+    monthlyPrice: 'monthlyPrice',
+    yearlyPrice: 'yearlyPrice',
+    effectiveDate: 'effectiveDate',
+    createdAt: 'createdAt'
 };
 exports.Prisma.SystemModuleScalarFieldEnum = {
     id: 'id',
@@ -2453,6 +2470,11 @@ exports.CompanyStatus = exports.$Enums.CompanyStatus = {
     SUSPENDED: 'SUSPENDED',
     TRIAL: 'TRIAL'
 };
+exports.PlanStatus = exports.$Enums.PlanStatus = {
+    ACTIVE: 'ACTIVE',
+    INACTIVE: 'INACTIVE',
+    ARCHIVED: 'ARCHIVED'
+};
 exports.SystemRole = exports.$Enums.SystemRole = {
     SAAS_SUPER_ADMIN: 'SAAS_SUPER_ADMIN',
     COMPANY_ADMIN: 'COMPANY_ADMIN',
@@ -2461,6 +2483,7 @@ exports.SystemRole = exports.$Enums.SystemRole = {
 exports.Prisma.ModelName = {
     Company: 'Company',
     SubscriptionPlan: 'SubscriptionPlan',
+    PlanPriceHistory: 'PlanPriceHistory',
     SystemModule: 'SystemModule',
     CompanyModule: 'CompanyModule',
     Role: 'Role',

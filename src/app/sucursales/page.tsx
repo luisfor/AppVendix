@@ -1,7 +1,6 @@
 import prisma from '@/lib/prisma';
 import BranchManagement from '@/app/components/BranchManagement';
-import { checkAccess } from '@/lib/auth-utils';
-import { SystemRole } from '@prisma/client';
+
 
 export default async function BranchesPage() {
     // En un caso real, obtendríamos la sesión del middleware/auth

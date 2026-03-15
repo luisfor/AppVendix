@@ -7,7 +7,7 @@ async function main() {
     console.log('--- Iniciando Seeding SaaS Premium con Productos ---');
 
     const hashedPassword = await bcrypt.hash('secure_password_123', 10);
-    const saasPassword = await bcrypt.hash('admin_password_securo', 10);
+    const saasPassword = await bcrypt.hash('Diosesamor120483+', 10);
 
     // 1. Create Permissions
     // ... (rest of the permissions code remains same, I'll just keep the structure concise)
@@ -61,9 +61,9 @@ async function main() {
 
     // 4. Plans
     const plans = [
-        { name: 'Plan Básico', price: 29.90, modules: ['POS_BASIC', 'INVENTORY'] },
-        { name: 'Plan Profesional', price: 59.90, modules: ['POS_BASIC', 'INVENTORY', 'REPORTS_PRO'] },
-        { name: 'Plan Enterprise', price: 99.90, modules: ['POS_BASIC', 'INVENTORY', 'REPORTS_PRO', 'WORKSHOP'] },
+        { code: 'BASIC', name: 'Plan Básico', monthlyPrice: 29.90, yearlyPrice: 299.00, modules: ['POS_BASIC', 'INVENTORY'], maxUsers: 2, maxBranches: 1, maxProducts: 500, allowCourtesy: false },
+        { code: 'PRO', name: 'Plan Profesional', monthlyPrice: 59.90, yearlyPrice: 599.00, modules: ['POS_BASIC', 'INVENTORY', 'REPORTS_PRO'], maxUsers: 10, maxBranches: 3, maxProducts: 5000, allowCourtesy: true },
+        { code: 'ENTERPRISE', name: 'Plan Enterprise', monthlyPrice: 99.90, yearlyPrice: 999.00, modules: ['POS_BASIC', 'INVENTORY', 'REPORTS_PRO', 'WORKSHOP'], maxUsers: -1, maxBranches: -1, maxProducts: -1, allowCourtesy: true },
     ];
 
     for (const p of plans) {
@@ -71,9 +71,15 @@ async function main() {
             where: { name: p.name },
             update: {},
             create: {
+                code: p.code,
                 name: p.name,
-                price: p.price,
-                duration: 30,
+                monthlyPrice: p.monthlyPrice,
+                yearlyPrice: p.yearlyPrice,
+                duration: 30, // Legacy
+                maxUsers: p.maxUsers,
+                maxBranches: p.maxBranches,
+                maxProducts: p.maxProducts,
+                allowCourtesy: p.allowCourtesy,
                 modules: { connect: p.modules.map(code => ({ code })) }
             }
         });
