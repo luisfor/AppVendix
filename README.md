@@ -44,10 +44,12 @@ Arquitectura preparada para integración con pasarelas de pago (Stripe/PayPal):
 Panel de control dinámico con:
 - **Filtrado por KPI**: Haz clic en cualquier métrica (MRR, Empresas Activas, por Plan) para filtrar la tabla de gestión instantáneamente.
 - **Paginación Server-Side**: Optimizado para manejar miles de inquilinos con alto rendimiento.
+
+### 6. Sistema de Temas (Tema Dinámico) 🌓
 - **Persistencia en Base de Datos**: La preferencia del usuario se guarda en el perfil, permitiendo una experiencia consistente en cualquier dispositivo.
 - **Modos**: Oscuro (Default) y Claro, con transiciones suaves y optimización de contraste.
 
-### 7. Pruebas de Extremo a Extremo (E2E)
+### 7. Pruebas de Extremo a Extremo (E2E) 🧪
 - **Playwright**: Suite completa de pruebas automatizadas que cubren flujos críticos de negocio como autenticación, gestión de empresas y cambio de temas.
 
 ## 💻 Stack Tecnológico
