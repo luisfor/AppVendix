@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 14, "column": 0}, "map": {"version":3,"sources":["file:///Users/luis/Desktop/Workspaces/AppVendix/pos-saas/pos-saas/src/app/usuarios/page.tsx"],"sourcesContent":["import prisma from '@/lib/prisma';\nimport UserManagement from '@/app/components/UserManagement';\n\nexport default async function UsuariosPage() {\n    const company = await prisma.company.findFirst({\n        where: { name: 'Farmacia Salud y Vida' }\n    });\n\n    if (!company) {\n        return <div>Empresa de prueba no encontrada. Por favor ejecute el seed.</div>;\n    }\n\n    const users = await prisma.user.findMany({\n        where: { companyId: company.id },\n        include: { role: true }\n    });\n\n    return (\n        <div className=\"animate-fade-in\">\n            <UserManagement initialUsers={users} />\n        </div>\n    );\n}\n"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;AAGe,eAAe;IAC1B,MAAM,UAAU,MAAM,OAAO,OAAO,CAAC,SAAS,CAAC;QAC3C,OAAO;YAAE,MAAM;QAAwB;IAC3C;IAEA,IAAI,CAAC,SAAS;QACV,qBAAO,8OAAC;sBAAI;;;;;;IAChB;IAEA,MAAM,QAAQ,MAAM,OAAO,IAAI,CAAC,QAAQ,CAAC;QACrC,OAAO;YAAE,WAAW,QAAQ,EAAE;QAAC;QAC/B,SAAS;YAAE,MAAM;QAAK;IAC1B;IAEA,qBACI,8OAAC;QAAI,WAAU;kBACX,cAAA,8OAAC;YAAe,cAAc;;;;;;;;;;;AAG1C"}}]
-}
