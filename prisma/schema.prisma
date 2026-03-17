@@ -155,11 +155,19 @@ model PlanPriceHistory {
   createdAt      DateTime @default(now())
 }
 
+enum ModuleStatus {
+  ACTIVE
+  INACTIVE
+  BETA
+  IN_DEVELOPMENT
+}
+
 model SystemModule {
   id          String   @id @default(cuid())
   code        String   @unique // e.g., 'INVENTORY', 'REPORTS_PRO', 'WORKSHOP'
   name        String
   description String?
+  status      ModuleStatus @default(IN_DEVELOPMENT)
   plans       SubscriptionPlan[]
   companies   CompanyModule[]
   createdAt   DateTime @default(now())

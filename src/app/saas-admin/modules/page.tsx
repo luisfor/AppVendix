@@ -1,5 +1,23 @@
-import AdminPlaceholder from '@/app/components/AdminPlaceholder';
+import { getModules } from '@/lib/actions/modules';
+import { getPlans } from '@/lib/actions/saas-admin';
+import ModuleManagement from '@/app/components/saas/ModuleManagement';
 
-export default function ModulesPage() {
-    return <AdminPlaceholder title="Módulos del Sistema" />;
+export default async function ModulesPage() {
+    const modulesData = await getModules();
+    const plans = await getPlans();
+
+    return (
+        <div className="p-8">
+            <div className="mb-10">
+                <h1 className="text-4xl font-black tracking-tighter text-white mb-2 uppercase">
+                    Gestión de Módulos
+                </h1>
+                <p className="text-white/40 font-medium tracking-wide">
+                    Controla el registro, activación y disponibilidad de las funcionalidades del sistema.
+                </p>
+            </div>
+
+            <ModuleManagement initialData={modulesData} plans={plans} />
+        </div>
+    );
 }
