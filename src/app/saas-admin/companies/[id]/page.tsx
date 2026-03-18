@@ -1,6 +1,7 @@
 import { getCompanyDetails } from '@/lib/actions/saas-admin';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import UserManagement from '@/app/components/UserManagement';
 
 export default async function CompanyDetailsPage({ params }: { params: { id: string } }) {
     const { id } = await params;
@@ -104,35 +105,12 @@ export default async function CompanyDetailsPage({ params }: { params: { id: str
                 </div>
             </div>
 
-            {/* Recent Users */}
-            <div className="glass-card rounded-[2.5rem] overflow-hidden mt-8">
-                <div className="px-10 py-8 border-b border-[var(--border-dim)] flex items-center justify-between">
-                    <h3 className="text-[var(--text-dim)] uppercase tracking-[0.2em] text-[10px] font-black">Últimos Usuarios Registrados</h3>
-                </div>
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left">
-                        <thead>
-                            <tr className="text-[var(--text-dim)] text-[9px] uppercase tracking-widest font-black bg-[var(--text-dim)]/[0.02]">
-                                <th className="px-10 py-4">Usuario</th>
-                                <th className="px-10 py-4">Rol</th>
-                                <th className="px-10 py-4">Fecha</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-[var(--border-dim)]">
-                            {company.users?.map((user: any) => (
-                                <tr key={user.id} className="hover:bg-[var(--text-dim)]/[0.02] transition-colors">
-                                    <td className="px-10 py-5 font-bold text-[var(--text-main)]/90">{user.name} <span className="text-[var(--text-dim)] font-normal ml-2">({user.email})</span></td>
-                                    <td className="px-10 py-5">
-                                        <span className="px-3 py-1 rounded-full bg-[var(--text-dim)]/5 border border-[var(--border-dim)] text-[9px] font-black uppercase tracking-widest text-[var(--text-dim)]">
-                                            {user.systemRole}
-                                        </span>
-                                    </td>
-                                    <td className="px-10 py-5 text-[var(--text-dim)] text-sm">{new Date(user.createdAt).toLocaleDateString()}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+            {/* User Management Section */}
+            <div className="glass-card rounded-[2.5rem] p-10 mt-8">
+                <UserManagement
+                    initialUsers={company.users || []}
+                    companyId={company.id}
+                />
             </div>
         </div>
     );
