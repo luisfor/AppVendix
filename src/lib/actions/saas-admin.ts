@@ -43,7 +43,7 @@ export async function getSaaSMetrics() {
         count
     }));
 
-    return {
+    return JSON.parse(JSON.stringify({
         totalCompanies,
         activeCompanies,
         suspendedCompanies,
@@ -52,7 +52,7 @@ export async function getSaaSMetrics() {
         estimatedYearlyRevenue: mrr * 12,
         totalPlatformUsers,
         companiesPerPlan,
-    };
+    }));
 }
 
 export type CompanyFilter = {
@@ -165,7 +165,7 @@ export async function softDeleteCompany(companyId: string) {
 }
 
 export async function getCompanyDetails(id: string) {
-    return await prisma.company.findUnique({
+    const company = await prisma.company.findUnique({
         where: { id },
         include: {
             plan: { include: { modules: true } },
@@ -178,12 +178,13 @@ export async function getCompanyDetails(id: string) {
                 },
             },
             users: {
-                take: 10,
                 orderBy: { createdAt: 'desc' },
             },
             branches: true,
         },
     });
+
+    return JSON.parse(JSON.stringify(company));
 }
 
 export async function impersonateCompany(companyId: string) {

@@ -67,13 +67,25 @@ export default function ModuleManagement({ initialData, plans }: ModuleManagemen
         setShowForm(true);
     };
 
-    const getStatusColor = (status: ModuleStatus) => {
-        switch (status) {
-            case ModuleStatus.ACTIVE: return 'bg-green-500/10 text-green-400 border-green-500/20';
-            case ModuleStatus.INACTIVE: return 'bg-rose-500/10 text-rose-400 border-rose-500/20';
-            case ModuleStatus.BETA: return 'bg-amber-500/10 text-amber-400 border-amber-500/20';
-            case ModuleStatus.IN_DEVELOPMENT: return 'bg-blue-500/10 text-blue-400 border-blue-500/20';
+    const getStatusColor = (status: string) => {
+        const s = status?.toUpperCase();
+        switch (s) {
+            case 'ACTIVE': return 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40';
+            case 'INACTIVE': return 'bg-rose-500/20 text-rose-400 border-rose-500/40';
+            case 'BETA': return 'bg-amber-500/20 text-amber-400 border-amber-500/40';
+            case 'IN_DEVELOPMENT': return 'bg-sky-500/20 text-sky-400 border-sky-500/40';
             default: return 'bg-white/5 text-white/40 border-white/10';
+        }
+    };
+
+    const getStatusDot = (status: string) => {
+        const s = status?.toUpperCase();
+        switch (s) {
+            case 'ACTIVE': return 'bg-emerald-400 shadow-[0_0_10px_#10b981]';
+            case 'INACTIVE': return 'bg-rose-400 shadow-[0_0_10px_#f43f5e]';
+            case 'BETA': return 'bg-amber-400 shadow-[0_0_10px_#f59e0b]';
+            case 'IN_DEVELOPMENT': return 'bg-sky-400 shadow-[0_0_10px_#0ea5e9]';
+            default: return 'bg-white/20';
         }
     };
 
@@ -100,7 +112,7 @@ export default function ModuleManagement({ initialData, plans }: ModuleManagemen
                         className="bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all appearance-none cursor-pointer font-bold text-white/60"
                     >
                         <option value="" className="bg-slate-900">Todos los estados</option>
-                        {Object.values(ModuleStatus).map(status => (
+                        {['ACTIVE', 'INACTIVE', 'BETA', 'IN_DEVELOPMENT'].map(status => (
                             <option key={status} value={status} className="bg-slate-900">{status}</option>
                         ))}
                     </select>
@@ -149,7 +161,8 @@ export default function ModuleManagement({ initialData, plans }: ModuleManagemen
                                             </div>
                                         </td>
                                         <td className="px-8 py-6 text-center">
-                                            <span className={`px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest uppercase border ${getStatusColor(module.status)} shadow-sm`}>
+                                            <span className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest uppercase border ${getStatusColor(module.status)} shadow-sm transition-all duration-300`}>
+                                                <span className={`h-1.5 w-1.5 rounded-full animate-pulse ${getStatusDot(module.status)} shadow-[0_0_8px_rgba(0,0,0,0.5)]`}></span>
                                                 {module.status}
                                             </span>
                                         </td>
@@ -181,8 +194,8 @@ export default function ModuleManagement({ initialData, plans }: ModuleManagemen
                                                 <button
                                                     onClick={() => handleToggleStatus(module)}
                                                     className={`h-10 w-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 transition-all active:scale-90 ${module.status === 'ACTIVE'
-                                                            ? 'hover:bg-rose-500/20 hover:border-rose-500/20 hover:text-rose-400'
-                                                            : 'hover:bg-green-500/20 hover:border-green-500/20 hover:text-green-400'
+                                                        ? 'hover:bg-rose-500/20 hover:border-rose-500/20 hover:text-rose-400'
+                                                        : 'hover:bg-green-500/20 hover:border-green-500/20 hover:text-green-400'
                                                         }`}
                                                     title={module.status === 'ACTIVE' ? 'Desactivar' : 'Activar'}
                                                 >
@@ -223,8 +236,8 @@ export default function ModuleManagement({ initialData, plans }: ModuleManagemen
                                 key={i}
                                 onClick={() => refreshData(i + 1)}
                                 className={`w-10 h-10 rounded-xl border text-[10px] font-black transition-all active:scale-95 ${data.page === i + 1
-                                        ? 'bg-purple-600 border-purple-500 text-white shadow-lg shadow-purple-600/20'
-                                        : 'border-white/10 text-white/40 hover:bg-white/5 hover:border-white/20'
+                                    ? 'bg-purple-600 border-purple-500 text-white shadow-lg shadow-purple-600/20'
+                                    : 'border-white/10 text-white/40 hover:bg-white/5 hover:border-white/20'
                                     }`}
                             >
                                 {i + 1}

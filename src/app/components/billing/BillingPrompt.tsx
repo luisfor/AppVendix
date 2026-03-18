@@ -4,13 +4,21 @@ import { CompanyStatus } from '@prisma/client';
 import Link from 'next/link';
 
 export default async function BillingPrompt() {
-    const session = await getSession();
-    if (!session || !session.companyId) return null;
+    let session = null;
+    let company = null;
 
-    const company = await prisma.company.findUnique({
-        where: { id: session.companyId },
-        include: { plan: true }
-    });
+    try {
+        session = await getSession();
+        if (!session || !session.companyId) return null;
+
+        company = await prisma.company.findUnique({
+            where: { id: session.companyId },
+            include: { plan: true }
+        });
+    } catch (error) {
+        console.error('Error fetching billing prompt data:', error);
+        return null;
+    }
 
     if (!company) return null;
 

@@ -17,7 +17,10 @@ export default async function ModulesPage() {
                 </p>
             </div>
 
-            <ModuleManagement initialData={modulesData} plans={plans} />
+            <ModuleManagement
+                initialData={JSON.parse(JSON.stringify(modulesData))}
+                plans={JSON.parse(JSON.stringify(plans))}
+            />
         </div>
     );
 }

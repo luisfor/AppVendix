@@ -19,23 +19,29 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const session = await getSession();
-    const isSuperAdmin = session?.role === 'SAAS_SUPER_ADMIN';
-
+    let session = null;
     let company = null;
     let modules: string[] = [];
+    let isSuperAdmin = false;
 
-    if (session?.companyId) {
-        const enabledModules = await prisma.companyModule.findMany({
-            where: { companyId: session.companyId, enabled: true },
-            include: { module: true }
-        });
-        modules = enabledModules.map(em => em.module.code);
+    try {
+        session = await getSession();
+        isSuperAdmin = session?.role === 'SAAS_SUPER_ADMIN';
 
-        company = await prisma.company.findUnique({
-            where: { id: session.companyId },
-            include: { plan: true }
-        });
+        if (session?.companyId) {
+            const enabledModules = await prisma.companyModule.findMany({
+                where: { companyId: session.companyId, enabled: true },
+                include: { module: true }
+            });
+            modules = enabledModules.map(em => em.module.code);
+
+            company = await prisma.company.findUnique({
+                where: { id: session.companyId },
+                include: { plan: true }
+            });
+        }
+    } catch (error) {
+        console.error('Error loading layout data:', error);
     }
 
     return (
