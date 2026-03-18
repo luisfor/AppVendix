@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Plus, Pencil, Trash2, User, ShieldCheck } from 'lucide-react';
 import UserForm from './saas/UserForm';
+import DeleteConfirmationModal from './saas/DeleteConfirmationModal';
 import { upsertUser, deleteUser } from '@/lib/actions/users';
 
 interface User {
@@ -24,6 +25,7 @@ export default function UserManagement({ initialUsers, companyId }: UserManageme
     const [showForm, setShowForm] = useState(false);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(false);
+    const [userToDelete, setUserToDelete] = useState<User | null>(null);
 
     const handleSuccess = async (data: any) => {
         const result = await upsertUser(data);
@@ -35,16 +37,21 @@ export default function UserManagement({ initialUsers, companyId }: UserManageme
         window.location.reload();
     };
 
-    const handleDelete = async (user: User) => {
-        if (!confirm(`¿Estás seguro de eliminar a ${user.name}?`)) return;
+    const confirmDelete = async () => {
+        if (!userToDelete) return;
         setLoading(true);
         try {
-            await deleteUser(user.id);
-            setUsers(users.filter(u => u.id !== user.id));
+            const result = await deleteUser(userToDelete.id);
+            if (result.error) {
+                alert(result.error);
+            } else {
+                setUsers(users.filter(u => u.id !== userToDelete.id));
+            }
         } catch (error) {
             alert('Error al eliminar usuario');
         } finally {
             setLoading(false);
+            setUserToDelete(null);
         }
     };
 
@@ -135,7 +142,7 @@ export default function UserManagement({ initialUsers, companyId }: UserManageme
                                                 <Pencil size={14} />
                                             </button>
                                             <button
-                                                onClick={() => handleDelete(user)}
+                                                onClick={() => setUserToDelete(user)}
                                                 className="p-2 bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 border border-rose-500/20 rounded-lg transition-all"
                                                 title="Eliminar"
                                             >
@@ -157,6 +164,16 @@ export default function UserManagement({ initialUsers, companyId }: UserManageme
                     isSuperAdminFlow={false}
                     onClose={() => setShowForm(false)}
                     onSuccess={handleSuccess}
+                />
+            )}
+
+            {userToDelete && (
+                <DeleteConfirmationModal
+                    title="¿Bajas este Colaborador?"
+                    description="Esta acción eliminará el acceso del usuario a la oficina de forma inmediata. ¿Estás seguro?"
+                    itemName={userToDelete.name || userToDelete.email}
+                    onConfirm={confirmDelete}
+                    onClose={() => setUserToDelete(null)}
                 />
             )}
         </div>

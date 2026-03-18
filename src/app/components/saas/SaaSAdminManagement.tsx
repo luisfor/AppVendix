@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { upsertUser, deleteUser } from '@/lib/actions/users';
 import { Plus, Pencil, Trash2, User, Mail } from 'lucide-react';
 import UserForm from './UserForm';
+import DeleteConfirmationModal from './DeleteConfirmationModal';
 import { SystemRole } from '@prisma/client';
 
 interface SaaSAdminManagementProps {
@@ -15,6 +16,7 @@ export default function SaaSAdminManagement({ initialAdmins }: SaaSAdminManageme
     const [showForm, setShowForm] = useState(false);
     const [selectedAdmin, setSelectedAdmin] = useState<any>(null);
     const [loading, setLoading] = useState(false);
+    const [adminToDelete, setAdminToDelete] = useState<any>(null);
 
     const handleSuccess = async (data: any) => {
         const result = await upsertUser(data);
@@ -26,17 +28,26 @@ export default function SaaSAdminManagement({ initialAdmins }: SaaSAdminManageme
         window.location.reload();
     };
 
-    const handleDelete = async (id: string) => {
-        if (!confirm('¿Estás seguro de eliminar este administrador? Perderá acceso inmediato.')) return;
+    const confirmDelete = async () => {
+        if (!adminToDelete) return;
         setLoading(true);
         try {
-            await deleteUser(id);
-            setAdmins(admins.filter(a => a.id !== id));
+            const result = await deleteUser(adminToDelete.id);
+            if (result.error) {
+                alert(result.error);
+            } else {
+                setAdmins(admins.filter(a => a.id !== adminToDelete.id));
+            }
         } catch (error) {
             alert('Error al eliminar');
         } finally {
             setLoading(false);
+            setAdminToDelete(null);
         }
+    };
+
+    const handleDelete = (admin: any) => {
+        setAdminToDelete(admin);
     };
 
     const openEdit = (admin: any) => {
@@ -96,7 +107,7 @@ export default function SaaSAdminManagement({ initialAdmins }: SaaSAdminManageme
                                     <Pencil size={16} />
                                 </button>
                                 <button
-                                    onClick={() => handleDelete(admin.id)}
+                                    onClick={() => setAdminToDelete(admin)}
                                     className="p-2.5 bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 border border-rose-500/20 rounded-xl transition-all"
                                     title="Eliminar"
                                 >
@@ -114,6 +125,16 @@ export default function SaaSAdminManagement({ initialAdmins }: SaaSAdminManageme
                     isSuperAdminFlow={true}
                     onClose={() => setShowForm(false)}
                     onSuccess={handleSuccess}
+                />
+            )}
+
+            {adminToDelete && (
+                <DeleteConfirmationModal
+                    title="¿Bajas este Administrador?"
+                    description="Esta acción revocará todos los accesos de nivel Maestro de forma inmediata. ¿Estás seguro?"
+                    itemName={adminToDelete.name}
+                    onConfirm={confirmDelete}
+                    onClose={() => setAdminToDelete(null)}
                 />
             )}
         </div>

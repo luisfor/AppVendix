@@ -135,23 +135,42 @@ export async function upsertUser(data: {
 
 export async function deleteUser(id: string) {
     const session = await getSession();
-    if (!session) throw new Error('Unauthorized');
+    if (!session) throw new Error('No autorizado');
 
-    const userToDelete = await prisma.user.findUnique({ where: { id } });
-    if (!userToDelete) throw new Error('User not found');
+    if (session.userId === id) {
+        return { error: 'Seguridad: No puedes eliminar tu propia cuenta mientras estás logueado.' };
+    }
 
-    // Safety check again
+    const userToDelete = await prisma.user.findUnique({ 
+        where: { id },
+        include: {
+            // Check for potential blockages (e.g. if we add sales link to user later)
+            // For now, let's keep it check for existance
+        }
+    });
+    
+    if (!userToDelete) throw new Error('Usuario no encontrado');
+
+    // SaaS Admin Security
     if (userToDelete.systemRole === SystemRole.SAAS_SUPER_ADMIN && session.role !== SystemRole.SAAS_SUPER_ADMIN) {
-        throw new Error('Forbidden');
+        throw new Error('Prohibido: Solo un Super Admin puede eliminar a otro.');
     }
 
+    // Company Security
     if (session.role !== SystemRole.SAAS_SUPER_ADMIN && userToDelete.companyId !== session.companyId) {
-        throw new Error('Forbidden');
+        throw new Error('Prohibido: No tienes permisos sobre este recurso.');
     }
 
-    await prisma.user.delete({ where: { id } });
-    revalidatePaths(userToDelete.companyId);
-    return { success: true };
+    try {
+        await prisma.user.delete({ where: { id } });
+        revalidatePaths(userToDelete.companyId);
+        return { success: true };
+    } catch (error: any) {
+        if (error.code === 'P2003') {
+            return { error: 'No se puede eliminar: El usuario tiene registros asociados en el sistema (ej. ventas, turnos).' };
+        }
+        return { error: 'Error inesperado al intentar eliminar el usuario.' };
+    }
 }
 
 function revalidatePaths(companyId?: string | null) {
