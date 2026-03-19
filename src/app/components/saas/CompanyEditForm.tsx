@@ -85,7 +85,7 @@ export default function CompanyEditForm({ company, onClose, onSuccess }: Company
                         </div>
 
                         {/* Phone */}
-                        <div className="space-y-2 md:col-span-2">
+                        <div className="space-y-2">
                             <label className="text-[10px] font-black text-purple-400 uppercase tracking-widest ml-4">Teléfono Corporativo</label>
                             <PhoneInputField
                                 value={formData.phone}
@@ -94,7 +94,7 @@ export default function CompanyEditForm({ company, onClose, onSuccess }: Company
                         </div>
 
                         {/* Address */}
-                        <div className="space-y-2 md:col-span-2">
+                        <div className="space-y-2">
                             <label className="text-[10px] font-black text-purple-400 uppercase tracking-widest ml-4">Dirección Física (Google Maps)</label>
                             <div className="relative group">
                                 <MapPin className="absolute left-5 top-1/2 -translate-y-1/2 text-[var(--text-dim)] group-focus-within:text-purple-400 transition-colors" size={18} />
@@ -106,7 +106,6 @@ export default function CompanyEditForm({ company, onClose, onSuccess }: Company
                                     placeholder="Ej: Calle 10 #45, Bogota"
                                 />
                             </div>
-                            <p className="text-[9px] text-[var(--text-dim)] italic ml-4">Esta dirección se utilizará para generar el mapa interactivo.</p>
                         </div>
                     </div>
 

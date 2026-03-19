@@ -135,7 +135,7 @@ export default function PhoneInputField({ value, onChange, className = '' }: Pho
             />
 
             {/* ── Country selector trigger ── */}
-            <div className="relative h-full flex-shrink-0 ml-12">
+            <div className="relative h-full flex-shrink-0 ml-14">
                 <button
                     type="button"
                     onClick={() => setOpen(o => !o)}
@@ -151,7 +151,7 @@ export default function PhoneInputField({ value, onChange, className = '' }: Pho
 
                 {/* ── Dropdown ── */}
                 {open && (
-                    <div className="absolute top-full left-[-48px] mt-2 w-72 z-[10100] glass-card rounded-2xl border border-[var(--border-dim)] shadow-2xl shadow-black/40 overflow-hidden animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-150">
+                    <div className="absolute top-full left-[-56px] mt-2 w-72 z-[10100] glass-card rounded-2xl border border-[var(--border-dim)] shadow-2xl shadow-black/40 overflow-hidden animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-150">
                         {/* Search */}
                         <div className="p-3 border-b border-[var(--border-dim)] bg-[var(--sidebar-bg)]">
                             <div className="relative">
