@@ -34,12 +34,18 @@ async function getCroppedBlob(imageSrc: string, pixelCrop: CropArea): Promise<Bl
     canvas.width = size;
     canvas.height = size;
     const ctx = canvas.getContext('2d')!;
+    // White background — prevents black fill on transparent/semi-transparent images
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, size, size);
+    // Circular clip for the avatar shape
     ctx.beginPath();
     ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
     ctx.clip();
     ctx.drawImage(image, pixelCrop.x, pixelCrop.y, pixelCrop.width, pixelCrop.height, 0, 0, size, size);
-    return new Promise((res, rej) => canvas.toBlob(b => b ? res(b) : rej(new Error('toBlob failed')), 'image/jpeg', 0.92));
+    // Export as PNG to preserve quality and avoid JPEG artifacts on white background
+    return new Promise((res, rej) => canvas.toBlob(b => b ? res(b) : rej(new Error('toBlob failed')), 'image/png'));
 }
+
 
 export default function UserForm({ user, companyId, isSuperAdminFlow, onClose, onSuccess }: UserFormProps) {
     const [loading, setLoading] = useState(false);
@@ -111,7 +117,7 @@ export default function UserForm({ user, companyId, isSuperAdminFlow, onClose, o
         try {
             const blob = await getCroppedBlob(cropSrc, croppedAreaPixels);
             const fd = new FormData();
-            fd.append('file', blob, 'avatar.jpg');
+            fd.append('file', blob, 'avatar.png');
 
             const res = await fetch('/api/user/avatar', { method: 'POST', body: fd });
             const data = await res.json();

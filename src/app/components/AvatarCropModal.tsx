@@ -33,6 +33,10 @@ async function getCroppedImg(imageSrc: string, pixelCrop: Area): Promise<Blob> {
     const ctx = canvas.getContext('2d');
     if (!ctx) throw new Error('No canvas context');
 
+    // White background — prevents black on transparent images
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, size, size);
+
     // Draw circular clip
     ctx.beginPath();
     ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
@@ -54,7 +58,7 @@ async function getCroppedImg(imageSrc: string, pixelCrop: Area): Promise<Blob> {
         canvas.toBlob((blob) => {
             if (blob) resolve(blob);
             else reject(new Error('Canvas toBlob failed'));
-        }, 'image/jpeg', 0.92);
+        }, 'image/png');
     });
 }
 
