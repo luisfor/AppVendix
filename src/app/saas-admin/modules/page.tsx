@@ -9,10 +9,10 @@ export default async function ModulesPage() {
     return (
         <div className="p-8">
             <div className="mb-10">
-                <h1 className="text-4xl font-black tracking-tighter text-white mb-2 uppercase">
+                <h1 className="text-4xl font-black tracking-tighter text-[var(--text-main)] mb-2 uppercase">
                     Gestión de Módulos
                 </h1>
-                <p className="text-white/40 font-medium tracking-wide">
+                <p className="text-[var(--text-dim)] font-medium tracking-wide">
                     Controla el registro, activación y disponibilidad de las funcionalidades del sistema.
                 </p>
             </div>

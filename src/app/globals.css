@@ -15,7 +15,7 @@
   --border-dim: rgba(15, 23, 42, 0.08);
   /* More visible in light */
   --text-main: #0f172a;
-  --text-dim: #64748b;
+  --text-dim: #475569; /* Slightly darker than 64748b */
 }
 
 html.dark {
@@ -65,4 +65,14 @@ body {
 
 .animate-fade-in {
   animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Map reactive filtering */
+.filter-map-dark {
+  border: 0;
+  transition: filter 0.3s ease;
+}
+
+html.dark .filter-map-dark {
+  filter: invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }

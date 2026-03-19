@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma';
 import { CompanyStatus, SystemRole } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
+import { getSession } from '@/lib/auth-utils';
 import bcrypt from 'bcryptjs';
 
 export async function getSaaSMetrics() {
@@ -187,12 +188,7 @@ export async function getCompanyDetails(id: string) {
     return JSON.parse(JSON.stringify(company));
 }
 
-export async function impersonateCompany(companyId: string) {
-    // In a real app, this would set a special "impersonation" cookie or update the session
-    // For this POC, we'll return a success and perhaps log it
-    console.log(`[AUDIT] SaaS Admin is impersonating Company: ${companyId}`);
-    return { success: true, redirectUrl: '/' };
-}
+// This will be replaced by the one at the end or I will just remove it here
 
 export async function createCompany(data: {
     name: string;
@@ -225,6 +221,44 @@ export async function createCompany(data: {
 
     revalidatePath('/saas-admin');
     return { success: true, companyId: company.id };
+}
+
+// Keep only one version
+export async function impersonateCompany(companyId: string) {
+    const session = await getSession();
+    if (!session || session.role !== SystemRole.SAAS_SUPER_ADMIN) {
+        throw new Error('Unauthorized');
+    }
+    console.log(`[AUDIT] SaaS Admin ${session.userId} is impersonating Company: ${companyId}`);
+    return { success: true, redirectUrl: '/' };
+}
+
+export async function updateCompanyDetails(data: {
+    id: string;
+    name: string;
+    email: string;
+    address: string;
+    phone: string;
+}) {
+    const session = await getSession();
+    if (!session || session.role !== SystemRole.SAAS_SUPER_ADMIN) {
+        throw new Error('Unauthorized');
+    }
+
+    const updated = await prisma.company.update({
+        where: { id: data.id },
+        data: {
+            name: data.name,
+            email: data.email,
+            address: data.address,
+            phone: data.phone,
+        }
+    });
+
+    revalidatePath(`/saas-admin/companies/${data.id}`);
+    revalidatePath('/saas-admin/companies');
+    
+    return JSON.parse(JSON.stringify(updated));
 }
 
 export async function getPlans() {
