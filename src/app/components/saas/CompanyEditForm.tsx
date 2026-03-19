@@ -85,7 +85,7 @@ export default function CompanyEditForm({ company, onClose, onSuccess }: Company
                         </div>
 
                         {/* Phone */}
-                        <div className="space-y-2">
+                        <div className="space-y-2 md:col-span-2">
                             <label className="text-[10px] font-black text-purple-400 uppercase tracking-widest ml-4">Teléfono Corporativo</label>
                             <PhoneInputField
                                 value={formData.phone}
