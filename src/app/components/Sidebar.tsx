@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { logout } from '@/lib/actions/auth';
 import { SYSTEM_MODULES } from '@/lib/modules/registry';
+import { useUser } from '@/app/components/UserProvider';
+import { User } from 'lucide-react';
 
 interface SidebarProps {
     companyName: string;
@@ -14,6 +16,7 @@ interface SidebarProps {
 
 export default function Sidebar({ companyName, planName, modules, isSuperAdmin }: SidebarProps) {
     const pathname = usePathname();
+    const { userImage, userName, userEmail } = useUser();
 
     const superAdminItems = [
         { name: 'Dashboard', icon: '📊', href: '/saas-admin' },
@@ -79,9 +82,22 @@ export default function Sidebar({ companyName, planName, modules, isSuperAdmin }
             </nav>
             <div className="p-4 border-t border-[var(--border-dim)] space-y-4">
                 <div className="glass-card rounded-xl p-4 text-[10px]">
-                    <p className="text-[var(--text-dim)] mb-2 uppercase tracking-widest font-bold">
-                        {isSuperAdmin ? 'Full Access' : planName}
-                    </p>
+                    {/* User avatar + name */}
+                    <div className="flex items-center gap-3 mb-3">
+                        <div className="h-8 w-8 rounded-full overflow-hidden border border-[var(--border-dim)] flex-shrink-0 flex items-center justify-center bg-purple-500/10">
+                            {userImage ? (
+                                <img src={userImage} alt="avatar" className="h-full w-full object-cover" />
+                            ) : (
+                                <User size={14} className="text-purple-400" />
+                            )}
+                        </div>
+                        <div className="min-w-0">
+                            <p className="text-[var(--text-main)] font-bold truncate">{userName || userEmail || 'Usuario'}</p>
+                            <p className="text-[var(--text-dim)] uppercase tracking-widest font-bold">
+                                {isSuperAdmin ? 'Platform Owner' : planName}
+                            </p>
+                        </div>
+                    </div>
                     <div className="w-full bg-[var(--text-dim)]/10 h-1 rounded-full overflow-hidden">
                         <div className="bg-purple-600 h-full w-full shadow-sm shadow-purple-600/50" />
                     </div>
