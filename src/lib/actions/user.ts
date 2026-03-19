@@ -50,11 +50,11 @@ export async function updateUserAvatar(imageUrl: string) {
             data: { image: imageUrl },
         });
 
-        // Refresh Session Cookie with new image
+        // Refresh Session Cookie (do NOT include image — base64 data exceeds the 4KB cookie limit)
         const expires = new Date(session.expires);
         const newSession = await encrypt({
             ...session,
-            image: imageUrl,
+            // image intentionally excluded — loaded from DB in layout.tsx
         });
 
         (await cookies()).set('session', newSession, {

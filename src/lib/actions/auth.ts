@@ -39,8 +39,6 @@ export async function login(formData: FormData) {
     const session = await encrypt({
         userId: user.id,
         email: user.email,
-        name: user.name,
-        image: user.image,
         role: user.systemRole,
         companyId: user.companyId,
         themePreference: user.themePreference,

@@ -25,10 +25,22 @@ export default async function RootLayout({
     let company = null;
     let modules: string[] = [];
     let isSuperAdmin = false;
+    let userImage: string | null = null;
+    let userName: string | null = null;
 
     try {
         session = await getSession();
         isSuperAdmin = session?.role === 'SAAS_SUPER_ADMIN';
+
+        if (session?.userId) {
+            // Load name + image from DB (not from JWT — base64 images exceed the 4KB cookie limit)
+            const dbUser = await prisma.user.findUnique({
+                where: { id: session.userId },
+                select: { name: true, image: true },
+            });
+            userName = dbUser?.name ?? null;
+            userImage = dbUser?.image ?? null;
+        }
 
         if (session?.companyId) {
             const enabledModules = await prisma.companyModule.findMany({
@@ -51,8 +63,8 @@ export default async function RootLayout({
             <body className={`${inter.className} antialiased selection:bg-purple-500/30`}>
                 <ThemeProvider initialTheme={(session?.themePreference as "dark" | "light") || "dark"}>
                     <UserProvider
-                        initialImage={session?.image ?? null}
-                        initialName={session?.name ?? null}
+                        initialImage={userImage}
+                        initialName={userName}
                         initialEmail={session?.email ?? null}
                     >
                     <div className="flex h-screen overflow-hidden bg-[var(--background)]">
