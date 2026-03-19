@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, ChevronDown } from 'lucide-react';
+import { Search, ChevronDown, Phone } from 'lucide-react';
 
 /* ── Country data ─────────────────────────────────────────── */
 interface Country {
@@ -124,16 +124,25 @@ export default function PhoneInputField({ value, onChange, className = '' }: Pho
     );
 
     return (
-        <div className={`flex gap-2 ${className}`} ref={dropdownRef}>
-            {/* ── Country selector button ── */}
-            <div className="relative flex-shrink-0">
+        <div 
+            className={`relative group flex items-center bg-[var(--text-dim)]/5 border border-[var(--border-dim)] rounded-2xl focus-within:border-purple-500/50 focus-within:bg-purple-500/5 transition-all overflow-visible ${className}`} 
+            ref={dropdownRef}
+        >
+            {/* Leading Icon to match other fields */}
+            <Phone 
+                className="absolute left-5 top-1/2 -translate-y-1/2 text-[var(--text-dim)] group-focus-within:text-purple-400 transition-colors pointer-events-none" 
+                size={18} 
+            />
+
+            {/* ── Country selector trigger ── */}
+            <div className="relative h-full flex-shrink-0 ml-12">
                 <button
                     type="button"
                     onClick={() => setOpen(o => !o)}
-                    className="h-full flex items-center gap-1.5 bg-[var(--text-dim)]/5 border border-[var(--border-dim)] rounded-2xl px-3 py-4 text-sm font-bold text-[var(--text-main)] hover:border-purple-500/50 hover:bg-purple-500/5 focus:outline-none focus:border-purple-500/50 transition-all min-w-[96px]"
+                    className="flex items-center gap-2 pr-3 py-4 text-sm font-bold text-[var(--text-main)] hover:text-purple-400 transition-all border-r border-[var(--border-dim)] group-focus-within:border-purple-500/30 mr-2"
                 >
                     <span className="text-lg leading-none">{selectedCountry.flag}</span>
-                    <span className="text-[var(--text-dim)] text-xs font-black">+{selectedCountry.dialCode}</span>
+                    <span className="text-[var(--text-dim)] text-[10px] font-black tracking-tighter">+{selectedCountry.dialCode}</span>
                     <ChevronDown
                         size={12}
                         className={`text-[var(--text-dim)] transition-transform ${open ? 'rotate-180' : ''}`}
@@ -142,9 +151,9 @@ export default function PhoneInputField({ value, onChange, className = '' }: Pho
 
                 {/* ── Dropdown ── */}
                 {open && (
-                    <div className="absolute top-full left-0 mt-2 w-72 z-[10100] glass-card rounded-2xl border border-[var(--border-dim)] shadow-2xl shadow-black/40 overflow-hidden animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-150">
+                    <div className="absolute top-full left-[-48px] mt-2 w-72 z-[10100] glass-card rounded-2xl border border-[var(--border-dim)] shadow-2xl shadow-black/40 overflow-hidden animate-in fade-in zoom-in-95 slide-in-from-top-2 duration-150">
                         {/* Search */}
-                        <div className="p-3 border-b border-[var(--border-dim)]">
+                        <div className="p-3 border-b border-[var(--border-dim)] bg-[var(--sidebar-bg)]">
                             <div className="relative">
                                 <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-dim)]" />
                                 <input
@@ -158,7 +167,7 @@ export default function PhoneInputField({ value, onChange, className = '' }: Pho
                             </div>
                         </div>
                         {/* List */}
-                        <ul className="max-h-52 overflow-y-auto py-1">
+                        <ul className="max-h-52 overflow-y-auto py-1 bg-[var(--sidebar-bg)]">
                             {filtered.length === 0 && (
                                 <li className="px-4 py-3 text-xs text-[var(--text-dim)] text-center">Sin resultados</li>
                             )}
@@ -185,8 +194,8 @@ export default function PhoneInputField({ value, onChange, className = '' }: Pho
                 type="tel"
                 value={localNumber}
                 onChange={handleLocalChange}
-                placeholder="3160437913"
-                className="flex-1 bg-[var(--text-dim)]/5 border border-[var(--border-dim)] rounded-2xl py-4 px-5 text-sm font-bold text-[var(--text-main)] placeholder:text-[var(--text-dim)]/30 focus:outline-none focus:border-purple-500/50 focus:bg-purple-500/5 transition-all"
+                placeholder="316 043 7913"
+                className="flex-1 bg-transparent border-none py-4 px-1 text-sm font-bold text-[var(--text-main)] placeholder:text-[var(--text-dim)]/30 focus:outline-none"
             />
         </div>
     );
