@@ -4,8 +4,10 @@ import "./globals.css";
 import prisma from '@/lib/prisma';
 import { getSession } from '@/lib/auth-utils';
 import { ThemeProvider } from "@/app/components/ThemeProvider";
+import { UserProvider } from "@/app/components/UserProvider";
 import ThemeToggle from "@/app/components/ThemeToggle";
 import Sidebar from "@/app/components/Sidebar";
+import HeaderAvatar from "@/app/components/HeaderAvatar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -48,6 +50,11 @@ export default async function RootLayout({
         <html lang="es">
             <body className={`${inter.className} antialiased selection:bg-purple-500/30`}>
                 <ThemeProvider initialTheme={(session?.themePreference as "dark" | "light") || "dark"}>
+                    <UserProvider
+                        initialImage={session?.image ?? null}
+                        initialName={session?.name ?? null}
+                        initialEmail={session?.email ?? null}
+                    >
                     <div className="flex h-screen overflow-hidden bg-[var(--background)]">
                         {session && (
                             <Sidebar
@@ -67,15 +74,10 @@ export default async function RootLayout({
                                     </div>
                                     <div className="flex items-center gap-6">
                                         <ThemeToggle />
-                                        <div className="flex items-center gap-4">
-                                            <div className="flex flex-col items-end">
-                                                <span className="text-sm font-medium text-[var(--text-main)]">{session.email.split('@')[0]}</span>
-                                                <span className="text-[10px] text-[var(--text-dim)] uppercase tracking-widest font-bold">
-                                                    {isSuperAdmin ? 'PLATFORM OWNER' : (company?.name || 'Empresa')}
-                                                </span>
-                                            </div>
-                                            <div className="h-10 w-10 rounded-full bg-slate-200 dark:bg-slate-800 border border-[var(--border-dim)] shadow-sm" />
-                                        </div>
+                                        <HeaderAvatar
+                                            userName={session.email.split('@')[0]}
+                                            subtitle={isSuperAdmin ? 'PLATFORM OWNER' : (company?.name || 'Empresa')}
+                                        />
                                     </div>
                                 </header>
                             )}
@@ -84,6 +86,7 @@ export default async function RootLayout({
                             </div>
                         </main>
                     </div>
+                    </UserProvider>
                 </ThemeProvider>
             </body>
         </html>
