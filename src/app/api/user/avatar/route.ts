@@ -15,9 +15,9 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'El archivo debe ser una imagen' }, { status: 400 });
         }
 
-        // Validate file size (max 2MB)
-        if (file.size > 2 * 1024 * 1024) {
-            return NextResponse.json({ error: 'La imagen no puede superar 2MB' }, { status: 400 });
+        // Validate file size (max 5MB — cropped PNGs can be larger than JPEG)
+        if (file.size > 5 * 1024 * 1024) {
+            return NextResponse.json({ error: 'La imagen no puede superar 5MB' }, { status: 400 });
         }
 
         // Convert to base64

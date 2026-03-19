@@ -29,22 +29,36 @@ async function getCroppedBlob(imageSrc: string, pixelCrop: CropArea): Promise<Bl
         img.addEventListener('error', reject);
         img.src = imageSrc;
     });
-    const size = Math.min(pixelCrop.width, pixelCrop.height);
+
+    // Cap output at 400px — a 400×400 PNG is ~50–150 KB; unscaled can be 5–15 MB
+    const MAX_SIZE = 400;
+    const rawSize = Math.min(pixelCrop.width, pixelCrop.height);
+    const size = Math.min(rawSize, MAX_SIZE);
+    const scale = size / rawSize;
+
     const canvas = document.createElement('canvas');
     canvas.width = size;
     canvas.height = size;
     const ctx = canvas.getContext('2d')!;
-    // White background — prevents black fill on transparent/semi-transparent images
+
+    // White background — prevents black on transparent images
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, size, size);
-    // Circular clip for the avatar shape
+
+    // Circular clip for avatar shape
     ctx.beginPath();
     ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
     ctx.clip();
-    ctx.drawImage(image, pixelCrop.x, pixelCrop.y, pixelCrop.width, pixelCrop.height, 0, 0, size, size);
-    // Export as PNG to preserve quality and avoid JPEG artifacts on white background
+
+    ctx.drawImage(
+        image,
+        pixelCrop.x, pixelCrop.y, pixelCrop.width, pixelCrop.height,
+        0, 0, size, size
+    );
+
     return new Promise((res, rej) => canvas.toBlob(b => b ? res(b) : rej(new Error('toBlob failed')), 'image/png'));
 }
+
 
 
 export default function UserForm({ user, companyId, isSuperAdminFlow, onClose, onSuccess }: UserFormProps) {
