@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { SystemRole } from '@prisma/client';
 import { Plus } from 'lucide-react';
+import AvatarCropModal from '@/app/components/AvatarCropModal';
+import { useUser } from '@/app/components/UserProvider';
 
 interface UserFormProps {
     user?: any;
@@ -17,6 +19,9 @@ export default function UserForm({ user, companyId, isSuperAdminFlow, onClose, o
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [mounted, setMounted] = useState(false);
+    const [cropSrc, setCropSrc] = useState<string | null>(null);
+    const [uploading, setUploading] = useState(false);
+    const { setUserImage } = useUser();
 
     useEffect(() => {
         setMounted(true);
@@ -42,16 +47,45 @@ export default function UserForm({ user, companyId, isSuperAdminFlow, onClose, o
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file) {
-            if (file.size > 1024 * 1024) { // Limit 1MB
-                setError('La imagen es demasiado grande. Máximo 1MB.');
-                return;
-            }
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setFormData({ ...formData, image: reader.result as string });
-            };
-            reader.readAsDataURL(file);
+        if (!file) return;
+        if (!file.type.startsWith('image/')) {
+            setError('Por favor selecciona un archivo de imagen válido.');
+            return;
+        }
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setCropSrc(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+        // Reset input so same file can be selected again
+        e.target.value = '';
+    };
+
+    const handleCropSave = async (blob: Blob) => {
+        setUploading(true);
+        setError(null);
+        try {
+            const formDataUpload = new FormData();
+            formDataUpload.append('file', blob, 'avatar.jpg');
+
+            const res = await fetch('/api/user/avatar', {
+                method: 'POST',
+                body: formDataUpload,
+            });
+
+            const data = await res.json();
+            if (!res.ok || data.error) throw new Error(data.error || 'Error al subir la imagen');
+
+            // Update local form preview
+            setFormData(prev => ({ ...prev, image: data.imageUrl }));
+            // Update global header/navbar avatar instantly
+            setUserImage(data.imageUrl);
+            setCropSrc(null);
+        } catch (err: any) {
+            setError(err.message || 'Error al procesar la imagen');
+            throw err; // let AvatarCropModal show its error state too
+        } finally {
+            setUploading(false);
         }
     };
 
@@ -76,7 +110,9 @@ export default function UserForm({ user, companyId, isSuperAdminFlow, onClose, o
 
     if (!mounted) return null;
 
-    return createPortal(
+    return (
+        <>
+        {createPortal(
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
             <div className="glass-card w-full max-w-2xl rounded-3xl border border-[var(--border-dim)] shadow-2xl p-8 animate-in zoom-in slide-in-from-bottom-4 duration-500 max-h-[90vh] overflow-y-auto">
                 <div className="flex justify-between items-center mb-8">
@@ -92,7 +128,8 @@ export default function UserForm({ user, companyId, isSuperAdminFlow, onClose, o
                             <button 
                                 type="button"
                                 onClick={() => fileInputRef.current?.click()}
-                                className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full bg-purple-600 text-white flex items-center justify-center shadow-lg hover:bg-purple-700 transition-all active:scale-95 border-2 border-[var(--background)]"
+                                disabled={uploading}
+                                className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full bg-purple-600 text-white flex items-center justify-center shadow-lg hover:bg-purple-700 transition-all active:scale-95 border-2 border-[var(--background)] disabled:opacity-60"
                                 title="Subir foto"
                             >
                                 <Plus size={16} />
@@ -271,5 +308,15 @@ export default function UserForm({ user, companyId, isSuperAdminFlow, onClose, o
             </div>
         </div>,
         document.body
+        )}
+        {cropSrc && createPortal(
+            <AvatarCropModal
+                imageSrc={cropSrc}
+                onClose={() => setCropSrc(null)}
+                onSave={handleCropSave}
+            />,
+            document.body
+        )}
+        </>
     );
 }
