@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { X, Building2, MapPin, Phone, Mail, Save } from 'lucide-react';
+import { X, Building2, MapPin, Mail, Save } from 'lucide-react';
+import PhoneInputField from '@/app/components/PhoneInputField';
 
 interface CompanyEditFormProps {
     company: any;
@@ -86,16 +87,10 @@ export default function CompanyEditForm({ company, onClose, onSuccess }: Company
                         {/* Phone */}
                         <div className="space-y-2">
                             <label className="text-[10px] font-black text-purple-400 uppercase tracking-widest ml-4">Teléfono Corporativo</label>
-                            <div className="relative group">
-                                <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-[var(--text-dim)] group-focus-within:text-purple-400 transition-colors" size={18} />
-                                <input
-                                    type="text"
-                                    value={formData.phone}
-                                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                                    className="w-full bg-[var(--text-dim)]/5 border border-[var(--border-dim)] rounded-2xl py-4 pl-14 pr-6 text-sm font-bold text-[var(--text-main)] focus:outline-none focus:border-purple-500/50 focus:bg-purple-500/5 transition-all"
-                                    placeholder="+123456789"
-                                />
-                            </div>
+                            <PhoneInputField
+                                value={formData.phone}
+                                onChange={(full) => setFormData({ ...formData, phone: full })}
+                            />
                         </div>
 
                         {/* Address */}
